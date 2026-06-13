@@ -6,6 +6,10 @@ directions for an origin->destination pair in transit mode and returns the
 fare, duration and route. Best-effort: any failure returns a structured notice
 rather than raising, so the agent can fall back to curated/estimated fares.
 
+Results are cached per (origin, destination, lang). `prefetch()` warms that
+cache for many pairs in a SINGLE concurrent container run, so the rail phase's
+per-segment lookups hit the cache instead of launching a browser each time.
+
 Build the image once:  docker build -t gmaps-scraper:fares <fork checkout>
 """
 from __future__ import annotations
@@ -26,13 +30,15 @@ _DIGITS = re.compile(r"\d+")
 
 
 class GmapsFareService:
-    """Runs the `gmaps-fares` container for a single origin->destination pair."""
+    """Runs the `gmaps-fares` container; caches results; can batch-prefetch."""
 
-    def __init__(self, *, enabled: bool, image: str, lang: str, timeout: float):
+    def __init__(self, *, enabled: bool, image: str, lang: str, timeout: float, concurrency: int):
         self._enabled = enabled
         self._image = image
         self._lang = lang
         self._timeout = timeout
+        self._concurrency = max(1, concurrency)
+        self._cache: dict[tuple[str, str, str], dict[str, Any]] = {}
 
     @classmethod
     def from_settings(cls) -> "GmapsFareService":
@@ -41,6 +47,7 @@ class GmapsFareService:
             image=settings.gmaps_fares_image,
             lang=settings.gmaps_fares_lang,
             timeout=settings.gmaps_fares_timeout_seconds,
+            concurrency=settings.gmaps_fares_concurrency,
         )
 
     async def transit_fare(self, origin: str, destination: str) -> dict[str, Any]:
@@ -50,16 +57,57 @@ class GmapsFareService:
             return {"ok": False, "error": "Live Google Maps fare lookup is disabled (SAKURA_GMAPS_FARES_ENABLED)."}
         if not origin or not destination:
             return {"ok": False, "error": "Both origin and destination are required."}
+
+        cached = self._cache.get((origin, destination, self._lang))
+        if cached is not None:
+            return dict(cached)
+
         if shutil.which("docker") is None:
             return {"ok": False, "error": "Docker is unavailable; cannot run the Google Maps scraper."}
 
+        rows, err = await self._run(f"{origin} -> {destination}\n", concurrency=1)
+        if err is not None:
+            return {"ok": False, "error": err}
+
+        row = _match_row(rows, origin, destination)
+        if row is None:
+            return {"ok": False, "error": "Google Maps returned no result for this route."}
+        return self._build_result(origin, destination, row)
+
+    async def prefetch(self, pairs: list[tuple[str, str]]) -> None:
+        """Warm the cache for many pairs in one concurrent run. Best-effort, never raises."""
+        if not self._enabled or shutil.which("docker") is None:
+            return
+
+        todo: list[tuple[str, str]] = []
+        seen: set[tuple[str, str, str]] = set()
+        for origin, destination in pairs:
+            origin, destination = origin.strip(), destination.strip()
+            key = (origin, destination, self._lang)
+            if not origin or not destination or key in self._cache or key in seen:
+                continue
+            seen.add(key)
+            todo.append((origin, destination))
+
+        if not todo:
+            return
+
+        input_text = "".join(f"{o} -> {d}\n" for o, d in todo)
+        rows, err = await self._run(input_text, concurrency=min(len(todo), self._concurrency))
+        if err is not None or not rows:
+            return  # leave uncached; transit_fare will retry per-pair / fall back
+
+        for origin, destination in todo:
+            row = _match_row(rows, origin, destination)
+            if row is not None:
+                self._build_result(origin, destination, row)  # caches on success
+
+    async def _run(self, input_text: str, concurrency: int) -> tuple[list[dict[str, str]] | None, str | None]:
         cmd = [
             "docker", "run", "--rm", "-i", "--entrypoint", "gmaps-fares",
             self._image,
-            "-input", "stdin", "-results", "stdout", "-lang", self._lang,
+            "-input", "stdin", "-results", "stdout", "-lang", self._lang, "-c", str(concurrency),
         ]
-        stdin = f"{origin} -> {destination}\n".encode()
-
         try:
             proc = await asyncio.create_subprocess_exec(
                 *cmd,
@@ -68,24 +116,23 @@ class GmapsFareService:
                 stderr=asyncio.subprocess.PIPE,
             )
         except OSError as exc:
-            return {"ok": False, "error": f"Could not start Docker: {exc}"}
+            return None, f"Could not start Docker: {exc}"
 
         try:
-            out, err = await asyncio.wait_for(proc.communicate(stdin), timeout=self._timeout)
+            out, err = await asyncio.wait_for(proc.communicate(input_text.encode()), timeout=self._timeout)
         except asyncio.TimeoutError:
             proc.kill()
             await proc.wait()
-            return {"ok": False, "error": f"Google Maps lookup timed out after {self._timeout:.0f}s."}
+            return None, f"Google Maps lookup timed out after {self._timeout:.0f}s."
 
         if proc.returncode != 0:
             tail = _last_line(err) or f"exit {proc.returncode}"
             log.warning("gmaps-fares failed (image=%s): %s", self._image, tail)
-            return {"ok": False, "error": f"Scraper failed ({tail}). Is the '{self._image}' image built?"}
+            return None, f"Scraper failed ({tail}). Is the '{self._image}' image built?"
 
-        row = _first_csv_row(out.decode(errors="replace"))
-        if not row:
-            return {"ok": False, "error": "Google Maps returned no result for this route."}
+        return _csv_rows(out.decode(errors="replace")), None
 
+    def _build_result(self, origin: str, destination: str, row: dict[str, str]) -> dict[str, Any]:
         fare_jpy = _yen_to_int(row.get("fare", ""))
         result: dict[str, Any] = {
             "ok": True,
@@ -104,11 +151,13 @@ class GmapsFareService:
                 row.get("note")
                 or "Google Maps did not display a fare for this route (common for some buses/rural lines)."
             )
+        else:
+            self._cache[(origin, destination, self._lang)] = result
         return result
 
 
-def _first_csv_row(stdout: str) -> dict[str, str] | None:
-    """Find the CSV header the scraper prints and return the first data row.
+def _csv_rows(stdout: str) -> list[dict[str, str]]:
+    """Return every data row under the scraper's CSV header.
 
     The container logs to stderr, but we locate the header defensively in case
     anything leaks onto stdout.
@@ -116,11 +165,17 @@ def _first_csv_row(stdout: str) -> dict[str, str] | None:
     lines = stdout.splitlines()
     for i, line in enumerate(lines):
         if line.startswith("origin,destination,travel_mode"):
-            reader = csv.DictReader(io.StringIO("\n".join(lines[i:])))
-            for row in reader:
-                return row
-            return None
-    return None
+            return list(csv.DictReader(io.StringIO("\n".join(lines[i:]))))
+    return []
+
+
+def _match_row(rows: list[dict[str, str]] | None, origin: str, destination: str) -> dict[str, str] | None:
+    if not rows:
+        return None
+    for row in rows:
+        if row.get("origin", "").strip() == origin and row.get("destination", "").strip() == destination:
+            return row
+    return rows[0]
 
 
 def _yen_to_int(fare_text: str) -> int | None:

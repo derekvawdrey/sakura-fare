@@ -68,3 +68,27 @@ async def _healthy(url: str) -> bool:
             return resp.status_code == 200
     except httpx.HTTPError:
         return False
+
+
+async def ensure_gmaps_image() -> None:
+    """Warn (never fail) if the live-fare scraper image is missing, so it's clear
+    rail fares will fall back to the curated dataset."""
+    if not settings.gmaps_fares_enabled:
+        return
+    if not shutil.which("docker"):
+        log.warning("Docker not found — live Google Maps fares disabled; using the curated JR dataset.")
+        return
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            "docker", "image", "inspect", settings.gmaps_fares_image,
+            stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL,
+        )
+        code = await asyncio.wait_for(proc.wait(), timeout=15)
+    except (OSError, asyncio.TimeoutError):
+        return
+    if code != 0:
+        log.warning(
+            "Live-fare image '%s' not found — rail fares will fall back to the curated dataset. "
+            "Build it: docker build -t %s <google-maps-scraper checkout>",
+            settings.gmaps_fares_image, settings.gmaps_fares_image,
+        )

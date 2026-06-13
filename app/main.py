@@ -13,7 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from app.agent.client import LLMClient
 from app.agent.pipeline import AnalysisPipeline
 from app.api.routes import router
-from app.core.bootstrap import ensure_searxng
+from app.core.bootstrap import ensure_gmaps_image, ensure_searxng
 from app.core.config import settings
 from app.services.fares import FareRepository
 from app.services.geocode import GeocodeService
@@ -28,6 +28,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname
 async def lifespan(app: FastAPI):
     # Bring up the local SearXNG container if it isn't already running.
     await ensure_searxng()
+    await ensure_gmaps_image()
     app.state.fares = FareRepository(settings.fares_path)
     app.state.places = PlacesRepository(settings.places_path, settings.food_path)
     app.state.llm = LLMClient()

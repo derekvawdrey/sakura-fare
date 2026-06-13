@@ -41,6 +41,7 @@ class Settings(BaseSettings):
     gmaps_fares_image: str = "gmaps-scraper:fares"
     gmaps_fares_lang: str = "en"
     gmaps_fares_timeout_seconds: float = 150.0
+    gmaps_fares_concurrency: int = 4  # parallel browser pages when prefetching segment fares
 
     fares_path: Path = APP_DIR / "data" / "fares.json"
     places_path: Path = APP_DIR / "data" / "places.json"

@@ -288,6 +288,10 @@ class ToolBox:
         except Exception as exc:  # tool bugs must not kill the run
             return _dump({"ok": False, "error": f"Tool failed: {exc}"})
 
+    async def prefetch_fares(self, pairs: list[tuple[str, str]]) -> None:
+        """Warm the live-fare cache for all segment pairs in one batch (best-effort)."""
+        await self._gmaps.prefetch(pairs)
+
     async def _dispatch(self, name: str, args: dict[str, Any]) -> Any:
         if name == "lookup_route_fare":
             return self._fares.route_fare(

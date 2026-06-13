@@ -85,6 +85,11 @@ class AnalysisPipeline:
         emit("info", "Itinerary extracted",
              f"{len(itinerary.stays)} stays · {len(itinerary.segments)} segments · {itinerary.travelers} traveler(s)")
 
+        # Prefetch every segment fare in one concurrent batch so the rail agent's
+        # per-segment lookups hit a warm cache instead of launching a browser each.
+        emit("info", "Prefetching fares", f"Batch-pricing {len(itinerary.segments)} segments via Google Maps")
+        await self._toolbox.prefetch_fares([(s.from_place, s.to_place) for s in itinerary.segments])
+
         # -- phase 2: rail costing -----------------------------------------------
         emit("phase", "Pricing rail segments", f"{len(itinerary.segments)} segments against published fares")
         seg_lines = [
@@ -234,6 +239,12 @@ class AnalysisPipeline:
         else:
             assumptions.append("Quick mode: local transit budgeted as one day pass per city day; food not included.")
 
+        disclaimers = [self._fares.disclaimer, self._places.disclaimer, self._places.food_disclaimer]
+        if settings.gmaps_fares_enabled:
+            disclaimers.insert(0,
+                "Rail/transit fares are pulled live from Google Maps transit directions (real fares "
+                "incl. Shinkansen surcharges); the curated JR dataset is the fallback when Maps has none.")
+
         analysis = TripAnalysis(
             depth=depth, trip_summary=itin.trip_summary, travelers=travelers,
             season=itin.season, rail_segments=rail.segments, city_plans=city_plans,
@@ -241,8 +252,7 @@ class AnalysisPipeline:
             confidence=confidence, assumptions=assumptions,
             map=self._build_map(itin, rail, city_plans),
             dataset_version=self._fares.version,
-            disclaimers=[self._fares.disclaimer, self._places.disclaimer,
-                         self._places.food_disclaimer],
+            disclaimers=disclaimers,
         )
 
         if depth == "full":

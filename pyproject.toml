@@ -16,4 +16,9 @@ dependencies = [
 [dependency-groups]
 dev = [
     "fpdf2>=2.8.7",
+    "pytest>=9.1.0",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
