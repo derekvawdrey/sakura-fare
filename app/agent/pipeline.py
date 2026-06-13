@@ -47,7 +47,7 @@ class AnalysisPipeline:
         self._llm = llm
         self._fares = fares
         self._places = places
-        self._toolbox = ToolBox(fares, places, search)
+        self._toolbox = ToolBox(fares, places, search, llm)
         self._geocode = geocode
 
     async def run(
@@ -61,6 +61,8 @@ class AnalysisPipeline:
         text = document_text[: settings.document_max_chars]
         if len(document_text) > settings.document_max_chars:
             emit("info", "Document truncated", f"Using first {settings.document_max_chars} chars.")
+
+        self._toolbox.emit = emit  # let the research subagent stream sub-events
 
         # -- phase 1: extract ---------------------------------------------------
         emit("phase", "Extracting itinerary", "Reading the document and structuring stays + travel segments")

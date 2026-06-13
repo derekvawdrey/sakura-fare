@@ -9,6 +9,9 @@ from __future__ import annotations
 import json
 from typing import Any, Awaitable, Callable
 
+from app.agent.client import LLMClient
+from app.agent.loop import EventSink
+from app.agent.research import run_research
 from app.services.fares import FareRepository
 from app.services.gmaps_fares import GmapsFareService
 from app.services.places import PlacesRepository
@@ -33,13 +36,6 @@ def _dump(value: Any) -> str:
 
 
 # ---- shared tool definitions -------------------------------------------------
-
-SEARCH_STATION = _fn(
-    "search_station",
-    "Fuzzy-search the station registry by station name, city or landmark (English or Japanese).",
-    {"query": {"type": "string", "description": "e.g. 'Fukuoka' or '京都'"}},
-    ["query"],
-)
 
 LOOKUP_ROUTE_FARE = _fn(
     "lookup_route_fare",
@@ -76,6 +72,23 @@ FETCH_PAGE = _fn(
     "Fetch a web page from a web_search result and return its readable text (truncated). Use sparingly — at most a couple of pages per task.",
     {"url": {"type": "string"}},
     ["url"],
+)
+
+RESEARCH = _fn(
+    "research",
+    "Delegate ONE focused web-research question to a research subagent: it searches the live web, reads pages, and returns a concise, cited answer. Use for current info the curated guide lacks — an event, a venue's hours/price, a seasonal detail. Ask one specific question per call.",
+    {"question": {"type": "string", "description": "one specific question, e.g. 'teamLab Planets Tokyo admission price and hours 2026'"}},
+    ["question"],
+)
+
+SUBMIT_FINDINGS = _fn(
+    "submit_findings",
+    "Submit your research answer. Call exactly once.",
+    {
+        "answer": {"type": "string", "description": "1-3 sentences with concrete facts"},
+        "sources": {"type": "array", "items": {"type": "string"}, "description": "URLs you used"},
+    },
+    ["answer"],
 )
 
 CITY_GUIDE = _fn(
@@ -235,11 +248,13 @@ class ToolBox:
     """Bundles the data services and dispatches tool calls for any phase."""
 
     def __init__(self, fares: FareRepository, places: PlacesRepository, search: WebSearchService,
-                 gmaps: GmapsFareService | None = None):
+                 llm: LLMClient | None = None, gmaps: GmapsFareService | None = None):
         self._fares = fares
         self._places = places
         self._search = search
+        self._llm = llm
         self._gmaps = gmaps or GmapsFareService.from_settings()
+        self.emit: EventSink = lambda *_args: None
 
     async def execute(self, name: str, args: dict[str, Any]) -> str:
         try:
@@ -248,9 +263,6 @@ class ToolBox:
             return _dump({"ok": False, "error": f"Tool failed: {exc}"})
 
     async def _dispatch(self, name: str, args: dict[str, Any]) -> Any:
-        if name == "search_station":
-            matches = self._fares.search_stations(str(args.get("query", "")))
-            return matches or {"matches": [], "hint": "No station matched; try a nearby major city."}
         if name == "lookup_route_fare":
             return self._fares.route_fare(
                 str(args.get("from_station", "")), str(args.get("to_station", "")))
@@ -268,6 +280,8 @@ class ToolBox:
                 str(args.get("query", "")), int(args.get("max_results", 5)))
         if name == "fetch_page":
             return await self._search.fetch_page(str(args.get("url", "")))
+        if name == "research":
+            return await self._research(str(args.get("question", "")))
         return {"ok": False, "error": f"Unknown tool '{name}'"}
 
     async def _transit_fare(self, origin: str, destination: str) -> dict[str, Any]:
@@ -287,6 +301,22 @@ class ToolBox:
             "ok": False, "from": origin, "to": destination,
             "error": result.get("error") or "No fare from Google Maps and no curated match.",
         }
+
+    async def _research(self, question: str) -> dict[str, Any]:
+        """Delegate a web-research question to a focused subagent."""
+        question = question.strip()
+        if not question:
+            return {"ok": False, "error": "A research question is required."}
+        if self._llm is None:
+            return {"ok": False, "error": "Research subagent unavailable (no LLM bound)."}
+        self.emit("tool_call", "research subagent", question[:200])
+        return await run_research(
+            self._llm,
+            question,
+            tool_definitions=[WEB_SEARCH, FETCH_PAGE, SUBMIT_FINDINGS],
+            execute_tool=self.execute,
+            emit=lambda kind, title, detail=None: self.emit(kind, f"↳ {title}", detail),
+        )
 
 
 def _normalize_curated(curated: dict[str, Any], origin: str, destination: str) -> dict[str, Any] | None:
@@ -314,6 +344,6 @@ def _normalize_curated(curated: dict[str, Any], origin: str, destination: str) -
 
 
 # Phase tool sets
-EXTRACT_TOOLS = [SEARCH_STATION, SUBMIT_ITINERARY]
+EXTRACT_TOOLS = [SUBMIT_ITINERARY]
 RAIL_TOOLS = [LOOKUP_TRANSIT_FARE, SUBMIT_RAIL]
-CITY_TOOLS = [CITY_GUIDE, FOOD_REFERENCE, CITY_TRANSIT, LOOKUP_TRANSIT_FARE, WEB_SEARCH, FETCH_PAGE, SUBMIT_CITY_PLAN]
+CITY_TOOLS = [CITY_GUIDE, FOOD_REFERENCE, CITY_TRANSIT, LOOKUP_TRANSIT_FARE, RESEARCH, SUBMIT_CITY_PLAN]

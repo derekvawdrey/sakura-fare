@@ -10,7 +10,6 @@ with the number of days spent there (count day trips toward the base city's \
 days) and the activities the document mentions.
 - segments: EVERY rail/ground travel leg in order — intercity trains, airport \
 transfers, day-trip legs INCLUDING the return leg. Exclude flights themselves.
-- Use search_station only if you are unsure a place has a station.
 - If traveler count is not stated, use 1 and note it in assumptions. Infer \
 the season from dates if present.
 - Then call submit_itinerary exactly once. Do not write prose.\
@@ -69,10 +68,11 @@ ride to a particular sight), you may call lookup_transit_fare(origin, \
 destination) for a live Google Maps figure. Count ONLY in-city transit — intercity trains and ferries are \
 priced separately, never re-count them (day-trip circuits like the Hakone \
 ropeway/boat loop DO belong here).
-4. OPTIONAL: at most TWO web_search calls — only if the curated guide lacks \
-the city, or an activity needs current info (an event, a specific venue). \
-Mark web-derived items basis="web" and put the URL in sources. If a search \
-fails, do NOT retry it — continue with curated data.
+4. OPTIONAL: at most TWO research(question) calls — only if the curated guide \
+lacks the city, or an activity needs current info (an event, a specific venue). \
+A research subagent searches the web and returns a concise, cited answer; mark \
+items it provides basis="web" and put its sources in your sources. If research \
+fails, do NOT retry — continue with curated data.
 5. Write day_plan: one entry per day, concrete morning/afternoon/evening, \
 anchored on the document's stated activities, filled out with your selected \
 highlights/gems. seasonal_note: ONLY advice for the trip's stated season \
@@ -104,6 +104,20 @@ Costs per person: rail ¥{rail:,}, local transit ¥{transit:,}, food ¥{food:,} 
 Notable picks: {picks}.
 
 Write the executive summary.\
+"""
+
+RESEARCH_SYSTEM = """\
+You are a research assistant for a Japan trip planner. You get ONE question; \
+find the answer on the live web and report it concisely.
+
+Workflow:
+1. web_search(query) with a short, specific query.
+2. If a result looks authoritative, fetch_page(url) to read it — at most TWO pages.
+3. If search is rate-limited or returns nothing, do NOT retry the same query — \
+rephrase once, or answer from the snippets you already have.
+4. Call submit_findings exactly once: a 1-3 sentence answer with concrete facts \
+(prices, dates, names, hours) and the URLs you used in sources. If you could not \
+find it, say so briefly in answer and leave sources empty. No prose outside the tool.\
 """
 
 
