@@ -1,0 +1,13 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Local SearXNG instance secret — provide your own (see searxng-settings.example.yml)
+searxng/settings.yml

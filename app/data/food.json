@@ -1,0 +1,38 @@
+{
+  "version": "2025-10",
+  "currency": "JPY",
+  "disclaimer": "Typical menu prices in Japan, 2024-2025. Compiled from chain menu boards (Sukiya, Ichiran, CoCo Ichibanya), konbini pricing, and city tourism boards. Individual restaurants vary widely.",
+  "meal_reference": [
+    {"item": "Konbini breakfast (onigiri x2 + coffee)", "typical_jpy": 500, "range": [380, 650]},
+    {"item": "Cafe/bakery breakfast set", "typical_jpy": 850, "range": [600, 1200]},
+    {"item": "Gyudon (beef bowl) chain meal", "typical_jpy": 650, "range": [450, 900]},
+    {"item": "Ramen (bowl + topping)", "typical_jpy": 1100, "range": [850, 1500]},
+    {"item": "Teishoku (set meal) lunch", "typical_jpy": 1200, "range": [900, 1800]},
+    {"item": "Conveyor-belt sushi lunch", "typical_jpy": 1800, "range": [1200, 2800]},
+    {"item": "Department store bento", "typical_jpy": 900, "range": [600, 1500]},
+    {"item": "Izakaya dinner (drinks included)", "typical_jpy": 3500, "range": [2500, 5000]},
+    {"item": "Mid-range restaurant dinner", "typical_jpy": 3000, "range": [2000, 4500]},
+    {"item": "Yakiniku dinner", "typical_jpy": 4000, "range": [3000, 6000]},
+    {"item": "Kaiseki / fine dining", "typical_jpy": 12000, "range": [8000, 25000]},
+    {"item": "Street food item (takoyaki 8pc, taiyaki...)", "typical_jpy": 600, "range": [300, 900]},
+    {"item": "Craft beer / cocktail", "typical_jpy": 900, "range": [600, 1400]},
+    {"item": "Matcha + wagashi set", "typical_jpy": 900, "range": [600, 1500]}
+  ],
+  "daily_tiers": [
+    {"tier": "budget", "jpy_per_day": 3500, "composition": "konbini breakfast + chain/gyudon lunch + casual dinner or street food"},
+    {"tier": "standard", "jpy_per_day": 6500, "composition": "cafe breakfast + ramen/teishoku lunch + izakaya or mid-range dinner, one snack"},
+    {"tier": "premium", "jpy_per_day": 13000, "composition": "cafe breakfast + good sushi or teishoku lunch + one fine-dining or kaiseki-style dinner every other day"}
+  ],
+  "city_multipliers": {
+    "tokyo": 1.1,
+    "kyoto": 1.05,
+    "osaka": 0.95,
+    "nagoya": 1.0,
+    "fukuoka": 0.95,
+    "hiroshima": 0.95,
+    "sapporo": 0.95,
+    "kanazawa": 1.0,
+    "sendai": 0.95,
+    "default": 1.0
+  }
+}

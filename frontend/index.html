@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>桜旅 Sakura Fare — Japan Travel Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+</head>
+<body>
+<canvas id="petals" aria-hidden="true"></canvas>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="kanji-bg" aria-hidden="true">桜</p>
+    <h1><span class="jp">桜旅</span> Sakura Fare</h1>
+    <p class="tagline">Japan travel analyzer · 旅費 + 食事 + 隠れた名所</p>
+    <p class="health" id="health"><span class="dot"></span> checking local model…</p>
+  </div>
+</header>
+
+<main>
+  <!-- Upload panel -->
+  <section class="card" id="upload-card">
+    <h2><span class="icon">🎫</span> Your travel plan</h2>
+    <div id="dropzone" class="dropzone" tabindex="0">
+      <p class="dz-icon">🌸</p>
+      <p><strong>Drop your itinerary here</strong> or click to choose a file</p>
+      <p class="muted">PDF · DOCX · TXT · Markdown</p>
+      <input type="file" id="file-input" accept=".pdf,.docx,.txt,.md,.markdown" hidden>
+    </div>
+    <p class="file-chosen" id="file-chosen" hidden></p>
+
+    <details class="paste-toggle">
+      <summary>…or paste the plan as text</summary>
+      <textarea id="text-input" rows="8" placeholder="Day 1: Arrive at Narita, train to Tokyo…&#10;Day 3: Shinkansen to Kyoto…"></textarea>
+    </details>
+
+    <div class="depth-row" role="radiogroup" aria-label="Analysis depth">
+      <label class="depth-option">
+        <input type="radio" name="depth" value="full" checked>
+        <span><strong>Full analysis</strong><small>rail fares + food budget + city guides, hidden gems, day plans &amp; map · ~10-20 min</small></span>
+      </label>
+      <label class="depth-option">
+        <input type="radio" name="depth" value="quick">
+        <span><strong>Quick</strong><small>rail fares + transit passes only · ~3-5 min</small></span>
+      </label>
+    </div>
+
+    <div class="controls">
+      <label class="travelers">
+        Travelers
+        <input type="number" id="travelers" min="1" max="50" placeholder="auto">
+      </label>
+      <button id="analyze-btn" class="primary">Analyze trip <span class="btn-jp">分析</span></button>
+    </div>
+    <p class="error" id="form-error" hidden></p>
+  </section>
+
+  <!-- Progress panel -->
+  <section class="card" id="progress-card" hidden>
+    <h2><span class="icon">⛩️</span> Agent at work <span class="spinner" id="spinner"></span></h2>
+    <p class="muted" id="progress-doc"></p>
+    <div class="phase-strip" id="phase-strip"></div>
+    <p class="live-stat" id="live-stat" hidden></p>
+    <ol class="timeline" id="timeline"></ol>
+  </section>
+
+  <!-- Results panel -->
+  <section class="card result" id="result-card" hidden>
+    <h2><span class="icon">🌸</span> Trip analysis</h2>
+
+    <div class="totals">
+      <div class="total-main">
+        <p class="total-label" id="total-label">total · group</p>
+        <p class="total-value" id="total-group">¥0</p>
+        <p id="confidence-badge" class="badge"></p>
+      </div>
+      <div class="total-side">
+        <p class="per-person"><span id="total-person">¥0</span> per person</p>
+        <div class="breakdown-bar" id="breakdown-bar"></div>
+        <ul class="breakdown-legend" id="breakdown-legend"></ul>
+      </div>
+    </div>
+
+    <p class="summary" id="exec-summary"></p>
+    <p class="summary muted" id="trip-summary"></p>
+
+    <div id="map-block" hidden>
+      <h3>Route map 旅程図</h3>
+      <div id="map"></div>
+      <p class="muted map-hint">⬤ cities · <span class="pink">⬤</span> highlights · <span class="gold">⬤</span> hidden gems — click any marker</p>
+    </div>
+
+    <h3>Rail segments 区間</h3>
+    <div class="table-wrap">
+      <table id="segments-table">
+        <thead><tr><th>Day</th><th>Route</th><th>Train</th><th>Fare</th><th>Basis</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div id="cities-block" hidden>
+      <h3>City guides 街の案内</h3>
+      <div id="city-cards"></div>
+    </div>
+
+    <h3>Assumptions 前提</h3>
+    <ul id="assumptions" class="plain-list"></ul>
+
+    <p class="disclaimer" id="disclaimer"></p>
+    <button id="again-btn" class="secondary">Analyze another plan</button>
+  </section>
+</main>
+
+<footer>
+  <p>🌸 JR published fares + curated guides (dataset <span id="ds-version"></span>) · live web search · map © OpenStreetMap — verify before travel.</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="app.js"></script>
+</body>
+</html>

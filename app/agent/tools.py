@@ -1,0 +1,261 @@
+"""Per-phase tool registries: OpenAI-style definitions + async executors.
+
+Data tools are backed by the curated repositories (fares, places, food) and
+the live web (DuckDuckGo search, page fetch). Each phase gets only the tools
+it needs, keeping the local model focused.
+"""
+from __future__ import annotations
+
+import json
+from typing import Any, Awaitable, Callable
+
+from app.services.fares import FareRepository
+from app.services.places import PlacesRepository
+from app.services.search import WebSearchService
+
+ToolExecutor = Callable[[str, dict[str, Any]], Awaitable[str]]
+
+
+def _fn(name: str, description: str, properties: dict[str, Any], required: list[str]) -> dict[str, Any]:
+    return {
+        "type": "function",
+        "function": {
+            "name": name,
+            "description": description,
+            "parameters": {"type": "object", "properties": properties, "required": required},
+        },
+    }
+
+
+def _dump(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False)
+
+
+# ---- shared tool definitions -------------------------------------------------
+
+SEARCH_STATION = _fn(
+    "search_station",
+    "Fuzzy-search the station registry by station name, city or landmark (English or Japanese).",
+    {"query": {"type": "string", "description": "e.g. 'Fukuoka' or '京都'"}},
+    ["query"],
+)
+
+LOOKUP_ROUTE_FARE = _fn(
+    "lookup_route_fare",
+    "Train fare between two stations/places. Returns published fare options when available, otherwise a distance-based estimate (basis='estimated'). Call once per travel segment.",
+    {
+        "from_station": {"type": "string"},
+        "to_station": {"type": "string"},
+    },
+    ["from_station", "to_station"],
+)
+
+WEB_SEARCH = _fn(
+    "web_search",
+    "Search the live web (DuckDuckGo). Use for details not covered by curated tools: current prices, events, or guides for places without a curated entry. Keep queries short and specific.",
+    {
+        "query": {"type": "string"},
+        "max_results": {"type": "integer", "minimum": 1, "maximum": 8},
+    },
+    ["query"],
+)
+
+FETCH_PAGE = _fn(
+    "fetch_page",
+    "Fetch a web page from a web_search result and return its readable text (truncated). Use sparingly — at most a couple of pages per task.",
+    {"url": {"type": "string"}},
+    ["url"],
+)
+
+CITY_GUIDE = _fn(
+    "city_guide",
+    "Curated guide for a Japanese city: top highlights and hidden gems (with approx admission fees and coordinates), food specialties, seasonal notes, practical tips. Try this BEFORE web_search.",
+    {"city": {"type": "string"}},
+    ["city"],
+)
+
+FOOD_REFERENCE = _fn(
+    "food_cost_reference",
+    "Typical food costs for a city: daily budget tiers (budget/standard/premium, city-adjusted) and a reference list of typical meal prices.",
+    {"city": {"type": "string"}},
+    ["city"],
+)
+
+CITY_TRANSIT = _fn(
+    "city_transit_info",
+    "Typical local transit costs for a Japanese city: single-ride and day-pass prices.",
+    {"city": {"type": "string"}},
+    ["city"],
+)
+
+
+# ---- terminal tool definitions -------------------------------------------------
+
+SUBMIT_ITINERARY = _fn(
+    "submit_itinerary",
+    "Submit the structured itinerary extracted from the document. Call exactly once.",
+    {
+        "trip_summary": {"type": "string", "description": "1-2 sentences"},
+        "travelers": {"type": "integer", "minimum": 1},
+        "season": {"type": "string", "description": "e.g. 'spring (early April)' if stated or inferable, else omit"},
+        "stays": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "city": {"type": "string"},
+                    "days": {"type": "integer", "minimum": 1, "description": "days spent in/around this city incl. day trips based there"},
+                    "activities": {"type": "array", "items": {"type": "string"}, "description": "activities the document mentions there"},
+                },
+                "required": ["city", "days"],
+            },
+        },
+        "segments": {
+            "type": "array",
+            "description": "EVERY intercity/airport rail leg in travel order, including return legs of day trips",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "day": {"type": "string"},
+                    "from_place": {"type": "string"},
+                    "to_place": {"type": "string"},
+                    "note": {"type": "string", "description": "e.g. 'document says Nozomi reserved' or 'ferry to Miyajima'"},
+                },
+                "required": ["from_place", "to_place"],
+            },
+        },
+        "assumptions": {"type": "array", "items": {"type": "string"}},
+    },
+    ["trip_summary", "travelers", "stays", "segments"],
+)
+
+SUBMIT_RAIL = _fn(
+    "submit_rail_costs",
+    "Submit the priced rail segments. Call exactly once, after pricing every segment with lookup_route_fare.",
+    {
+        "segments": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "day": {"type": "string"},
+                    "from": {"type": "string"},
+                    "to": {"type": "string"},
+                    "line": {"type": "string"},
+                    "train": {"type": "string"},
+                    "fare_jpy": {"type": "integer", "description": "one-way per person, copied from the tool result"},
+                    "basis": {"type": "string", "enum": ["published", "estimated"]},
+                    "source": {"type": "string"},
+                    "notes": {"type": "string"},
+                },
+                "required": ["from", "to", "line", "train", "fare_jpy", "basis", "source"],
+            },
+        },
+        "assumptions": {"type": "array", "items": {"type": "string"}},
+    },
+    ["segments"],
+)
+
+SUBMIT_CITY_PLAN = _fn(
+    "submit_city_plan",
+    "Submit the completed city plan. Call exactly once per task.",
+    {
+        "city": {"type": "string"},
+        "days": {"type": "integer", "minimum": 1},
+        "food_tier": {"type": "string", "enum": ["budget", "standard", "premium"], "description": "matched to the document's style"},
+        "food_daily_jpy": {"type": "integer", "description": "per person per day, from food_cost_reference (±20% adjustment allowed)"},
+        "food_notes": {"type": "array", "items": {"type": "string"}, "description": "specialties to try with typical prices"},
+        "transit_recommendation": {"type": "string", "description": "e.g. 'Kyoto bus+subway 1-day pass (1,100) both days'"},
+        "transit_total_jpy": {"type": "integer", "description": "local transit total per person for ALL days here"},
+        "transit_basis": {"type": "string", "enum": ["published", "estimated", "curated"]},
+        "day_plan": {
+            "type": "array",
+            "description": "one entry per day, concrete and tied to the document's activities",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "label": {"type": "string", "description": "e.g. 'Day 6'"},
+                    "morning": {"type": "string"},
+                    "afternoon": {"type": "string"},
+                    "evening": {"type": "string"},
+                },
+                "required": ["label", "morning", "afternoon", "evening"],
+            },
+        },
+        "highlights": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "why": {"type": "string", "description": "one punchy sentence"},
+                    "cost_jpy": {"type": "integer", "description": "admission fee, 0 if free"},
+                    "lat": {"type": "number"}, "lon": {"type": "number"},
+                    "basis": {"type": "string", "enum": ["curated", "web"]},
+                },
+                "required": ["name", "why", "basis"],
+            },
+        },
+        "hidden_gems": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "why": {"type": "string"},
+                    "cost_jpy": {"type": "integer"},
+                    "lat": {"type": "number"}, "lon": {"type": "number"},
+                    "basis": {"type": "string", "enum": ["curated", "web"]},
+                },
+                "required": ["name", "why", "basis"],
+            },
+        },
+        "seasonal_note": {"type": "string"},
+        "sources": {"type": "array", "items": {"type": "string"}, "description": "URLs of any web sources used"},
+    },
+    ["city", "days", "food_tier", "food_daily_jpy", "transit_recommendation",
+     "transit_total_jpy", "transit_basis", "highlights", "hidden_gems"],
+)
+
+
+# ---- executors -------------------------------------------------------------------
+
+class ToolBox:
+    """Bundles the data services and dispatches tool calls for any phase."""
+
+    def __init__(self, fares: FareRepository, places: PlacesRepository, search: WebSearchService):
+        self._fares = fares
+        self._places = places
+        self._search = search
+
+    async def execute(self, name: str, args: dict[str, Any]) -> str:
+        try:
+            return _dump(await self._dispatch(name, args))
+        except Exception as exc:  # tool bugs must not kill the run
+            return _dump({"ok": False, "error": f"Tool failed: {exc}"})
+
+    async def _dispatch(self, name: str, args: dict[str, Any]) -> Any:
+        if name == "search_station":
+            matches = self._fares.search_stations(str(args.get("query", "")))
+            return matches or {"matches": [], "hint": "No station matched; try a nearby major city."}
+        if name == "lookup_route_fare":
+            return self._fares.route_fare(
+                str(args.get("from_station", "")), str(args.get("to_station", "")))
+        if name == "city_transit_info":
+            return self._fares.city_transit(str(args.get("city", "")))
+        if name == "city_guide":
+            return self._places.city_guide(str(args.get("city", "")))
+        if name == "food_cost_reference":
+            return self._places.food_reference(str(args.get("city", "")))
+        if name == "web_search":
+            return await self._search.search(
+                str(args.get("query", "")), int(args.get("max_results", 5)))
+        if name == "fetch_page":
+            return await self._search.fetch_page(str(args.get("url", "")))
+        return {"ok": False, "error": f"Unknown tool '{name}'"}
+
+
+# Phase tool sets
+EXTRACT_TOOLS = [SEARCH_STATION, SUBMIT_ITINERARY]
+RAIL_TOOLS = [SEARCH_STATION, LOOKUP_ROUTE_FARE, WEB_SEARCH, SUBMIT_RAIL]
+CITY_TOOLS = [CITY_GUIDE, FOOD_REFERENCE, CITY_TRANSIT, WEB_SEARCH, FETCH_PAGE, SUBMIT_CITY_PLAN]

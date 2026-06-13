@@ -1,0 +1,334 @@
+{
+  "version": "2025-10",
+  "disclaimer": "Curated guide. Admission fees are approximate 2025 adult prices and do change (e.g. Himeji Castle revises fees March 2026); coordinates are approximate. Verify hours/fees before visiting.",
+  "cities": {
+    "tokyo": {
+      "name": "Tokyo", "name_ja": "東京", "lat": 35.6812, "lon": 139.7671,
+      "highlights": [
+        {"name": "Senso-ji & Nakamise-dori", "why": "Tokyo's oldest temple; arrive before 9am to beat crowds", "cost_jpy": 0, "lat": 35.7148, "lon": 139.7967},
+        {"name": "Meiji Jingu", "why": "Forest shrine next to Harajuku; serene cedar-lined approach", "cost_jpy": 0, "lat": 35.6764, "lon": 139.6993},
+        {"name": "Shibuya Sky", "why": "Open-air rooftop over the Scramble; book sunset slot ahead", "cost_jpy": 2500, "lat": 35.6585, "lon": 139.7019},
+        {"name": "teamLab Planets (Toyosu)", "why": "Immersive barefoot digital art; timed tickets sell out", "cost_jpy": 3800, "lat": 35.6491, "lon": 139.7898}
+      ],
+      "hidden_gems": [
+        {"name": "Yanaka Ginza", "why": "Old shitamachi shopping street that survived the war; cat statues and croquettes", "cost_jpy": 0, "lat": 35.7283, "lon": 139.7666},
+        {"name": "Kagurazaka", "why": "Former geisha quarter with cobbled lanes and French-Japanese bistros", "cost_jpy": 0, "lat": 35.7019, "lon": 139.74},
+        {"name": "Shimokitazawa", "why": "Vintage shops, tiny bars and live houses; Tokyo's indie neighborhood", "cost_jpy": 0, "lat": 35.6611, "lon": 139.6682}
+      ],
+      "food_specialties": ["Sushi (omakase lunch 3,000-6,000)", "Monjayaki in Tsukishima 1,200-1,800", "Ramen 1,000-1,400", "Depachika food halls for picnic supplies"],
+      "seasonal": {
+        "spring": "Sakura peak usually late March-early April: Meguro River, Ueno Park, Chidorigafuchi rowboats.",
+        "summer": "Sumida River fireworks late July; very humid - plan indoor afternoons.",
+        "autumn": "Ginkgo gold at Meiji Jingu Gaien late November.",
+        "winter": "Crisp and clear; best Fuji visibility from observation decks."
+      },
+      "tips": ["Get a Suica/Pasmo in Apple/Google Wallet on arrival", "Tokyo Metro 24/48/72h passes pay off at 3+ rides/day"]
+    },
+    "kyoto": {
+      "name": "Kyoto", "name_ja": "京都", "lat": 34.9858, "lon": 135.7585,
+      "highlights": [
+        {"name": "Fushimi Inari Taisha", "why": "10,000 torii gates; go at dawn or after 17:00, upper trails near-empty", "cost_jpy": 0, "lat": 34.9671, "lon": 135.7727},
+        {"name": "Kinkaku-ji (Golden Pavilion)", "why": "Zen pavilion sheathed in gold leaf over a mirror pond", "cost_jpy": 500, "lat": 35.0394, "lon": 135.7292},
+        {"name": "Kiyomizu-dera", "why": "Hillside wooden stage with city views; pair with Sannenzaka lanes", "cost_jpy": 500, "lat": 34.9949, "lon": 135.785},
+        {"name": "Arashiyama bamboo grove + Tenryu-ji", "why": "Bamboo corridor (free) beside a UNESCO zen garden (500)", "cost_jpy": 500, "lat": 35.017, "lon": 135.671}
+      ],
+      "hidden_gems": [
+        {"name": "Honen-in", "why": "Mossy thatched gate off the Philosopher's Path; raked sand mounds, almost no visitors", "cost_jpy": 0, "lat": 35.0218, "lon": 135.7965},
+        {"name": "Otagi Nenbutsu-ji", "why": "1,200 moss-covered rakan statues, each with a different face; far end of Arashiyama", "cost_jpy": 500, "lat": 35.029, "lon": 135.6614},
+        {"name": "Fushimi sake district", "why": "Canal-side breweries south of the city; Gekkeikan museum tasting ~600", "cost_jpy": 600, "lat": 34.929, "lon": 135.762}
+      ],
+      "food_specialties": ["Obanzai (Kyoto home cooking) sets 1,500-2,500", "Yudofu (tofu hot pot) near Nanzen-ji 1,500-3,000", "Nishiki Market grazing 1,500-2,500", "Matcha parfaits in Uji style 900-1,400"],
+      "seasonal": {
+        "spring": "Sakura peak ~April 1-10: Philosopher's Path, Maruyama Park; book everything early.",
+        "summer": "Gion Matsuri all July (grand processions 17th & 24th); kawadoko river dining.",
+        "autumn": "Foliage mid-November-early December: Tofuku-ji, Eikando night illumination.",
+        "winter": "Quiet season; occasional snow on Kinkaku-ji is spectacular."
+      },
+      "tips": ["Buses get jammed - prefer subway + walking", "One-day subway+bus pass 1,100 pays off quickly"]
+    },
+    "osaka": {
+      "name": "Osaka", "name_ja": "大阪", "lat": 34.7025, "lon": 135.4959,
+      "highlights": [
+        {"name": "Dotonbori", "why": "Neon canyon of street food under the Glico sign; go after dark", "cost_jpy": 0, "lat": 34.6687, "lon": 135.5013},
+        {"name": "Osaka Castle", "why": "Reconstructed keep with museum and skyline views from the top floor", "cost_jpy": 600, "lat": 34.6873, "lon": 135.5262},
+        {"name": "Kuromon Ichiba Market", "why": "Eat-as-you-go market: wagyu skewers, uni, grilled scallops", "cost_jpy": 0, "lat": 34.6655, "lon": 135.5063},
+        {"name": "Umeda Sky Building", "why": "Floating garden observatory linking twin towers", "cost_jpy": 1500, "lat": 34.7053, "lon": 135.4903}
+      ],
+      "hidden_gems": [
+        {"name": "Hozenji Yokocho", "why": "Lantern-lit stone alley with the moss-covered Fudo statue - splash water on it for luck", "cost_jpy": 0, "lat": 34.6678, "lon": 135.5031},
+        {"name": "Nakazakicho", "why": "Bombing-spared blocks of pre-war houses turned retro cafes and zakka shops", "cost_jpy": 0, "lat": 34.7106, "lon": 135.506},
+        {"name": "Shinsekai & Janjan Yokocho", "why": "Retro 1912 district under Tsutenkaku tower; standing kushikatsu bars", "cost_jpy": 0, "lat": 34.6525, "lon": 135.5063}
+      ],
+      "food_specialties": ["Takoyaki ~600/8pc", "Okonomiyaki 900-1,400", "Kushikatsu session 1,500-2,500 (no double-dipping!)", "Kitsune udon - Osaka invention"],
+      "seasonal": {
+        "spring": "Sakura along Okawa river & Kema Sakuranomiya park, late March-early April.",
+        "summer": "Tenjin Matsuri July 24-25 with river procession and fireworks.",
+        "autumn": "Minoo Park waterfall hike (30 min by Hankyu) for maple leaves + momiji tempura.",
+        "winter": "Illuminations along Midosuji; kuidaore food crawls are indoor-friendly."
+      },
+      "tips": ["'Kuidaore' (eat till you drop) is the city motto - budget extra food money here", "Osaka Metro day pass 820 on weekdays"]
+    },
+    "nara": {
+      "name": "Nara", "name_ja": "奈良", "lat": 34.6851, "lon": 135.8048,
+      "highlights": [
+        {"name": "Todai-ji Daibutsuden", "why": "World's largest bronze Buddha in a vast wooden hall", "cost_jpy": 800, "lat": 34.6889, "lon": 135.8398},
+        {"name": "Nara Park deer", "why": "1,200 sacred bowing deer; crackers 200/pack", "cost_jpy": 0, "lat": 34.6851, "lon": 135.843},
+        {"name": "Kasuga Taisha", "why": "Vermilion shrine hung with 3,000 bronze and stone lanterns", "cost_jpy": 0, "lat": 34.6814, "lon": 135.8484}
+      ],
+      "hidden_gems": [
+        {"name": "Naramachi", "why": "Edo-period merchant quarter: machiya lattice houses, tiny museums, mochi shops", "cost_jpy": 0, "lat": 34.6776, "lon": 135.8297},
+        {"name": "Yoshikien Garden", "why": "Three gardens in one - free admission for foreign visitors", "cost_jpy": 0, "lat": 34.684, "lon": 135.839},
+        {"name": "Wakakusa-yama", "why": "Grassy hill behind the park; 30-min climb for sunset over the basin", "cost_jpy": 150, "lat": 34.6845, "lon": 135.85}
+      ],
+      "food_specialties": ["Kakinoha-zushi (persimmon-leaf sushi) ~1,000", "High-speed mochi pounding at Nakatanidou 250/piece", "Kuzu (arrowroot) sweets"],
+      "seasonal": {
+        "spring": "Deer + sakura in Nara Park is a classic combo, early April.",
+        "summer": "Lantern festivals (Mantoro) at Kasuga Taisha in mid-August.",
+        "autumn": "Sub-temple gardens turn red through late November.",
+        "winter": "Yamayaki (mountain burning festival) on Wakakusa-yama, fourth Saturday of January."
+      },
+      "tips": ["Easy half/full-day trip from Kyoto or Osaka; main sights walkable from Kintetsu-Nara"]
+    },
+    "hiroshima": {
+      "name": "Hiroshima", "name_ja": "広島", "lat": 34.3975, "lon": 132.4753,
+      "highlights": [
+        {"name": "Peace Memorial Park & Museum", "why": "Moving, essential history; museum entry just 200", "cost_jpy": 200, "lat": 34.3955, "lon": 132.4536},
+        {"name": "Itsukushima Shrine (Miyajima)", "why": "The floating torii; check tide tables - high tide for floating, low to walk out", "cost_jpy": 300, "lat": 34.296, "lon": 132.3198},
+        {"name": "Hiroshima Castle", "why": "Reconstructed 'Carp Castle' with samurai-era museum", "cost_jpy": 370, "lat": 34.4027, "lon": 132.4593}
+      ],
+      "hidden_gems": [
+        {"name": "Mitaki-dera", "why": "Mossy hillside temple with three waterfalls, 15 min by train - locals only", "cost_jpy": 0, "lat": 34.422, "lon": 132.431},
+        {"name": "Shukkei-en", "why": "1620 'shrunken scenery' garden that quietly survived the bomb", "cost_jpy": 260, "lat": 34.4015, "lon": 132.4677},
+        {"name": "Okonomimura", "why": "Three floors, 23 okonomiyaki counters - pick whichever grill has locals", "cost_jpy": 0, "lat": 34.392, "lon": 132.463}
+      ],
+      "food_specialties": ["Hiroshima okonomiyaki (noodle-layered) 900-1,300", "Grilled oysters on Miyajima 500-1,000", "Anago-meshi (conger eel rice) near Miyajimaguchi ~2,500", "Momiji manju 120/piece"],
+      "seasonal": {
+        "spring": "Sakura around the castle moat and Peace Park, late March-early April.",
+        "summer": "Hot; Miyajima evenings are the escape - torii lit until 23:00.",
+        "autumn": "Momijidani valley on Miyajima is one of Japan's best maple spots, mid-late November.",
+        "winter": "Oyster season peak - try kakigoya grill shacks."
+      },
+      "tips": ["Stay on Miyajima past 17:00 - day-trippers leave and deer roam the lantern-lit shore"]
+    },
+    "kanazawa": {
+      "name": "Kanazawa", "name_ja": "金沢", "lat": 36.578, "lon": 136.648,
+      "highlights": [
+        {"name": "Kenroku-en", "why": "One of Japan's three great gardens; go at opening (7:00)", "cost_jpy": 320, "lat": 36.5618, "lon": 136.6628},
+        {"name": "Higashi Chaya District", "why": "Geisha teahouse streets; gold-leaf everything", "cost_jpy": 0, "lat": 36.5727, "lon": 136.6668},
+        {"name": "Omicho Market", "why": "180 stalls; kaisendon breakfast is the move", "cost_jpy": 0, "lat": 36.5718, "lon": 136.6557}
+      ],
+      "hidden_gems": [
+        {"name": "D.T. Suzuki Museum", "why": "Minimalist water-mirror courtyard honoring the zen philosopher - meditative and empty", "cost_jpy": 310, "lat": 36.5575, "lon": 136.6635},
+        {"name": "Myoryu-ji (Ninja Temple)", "why": "Trapdoors, hidden stairs, escape tunnels; reserve a tour by phone", "cost_jpy": 1200, "lat": 36.556, "lon": 136.6485},
+        {"name": "Oyama Shrine", "why": "Shrine gate mixing Dutch stained glass with Japanese joinery", "cost_jpy": 0, "lat": 36.5659, "lon": 136.6553}
+      ],
+      "food_specialties": ["Kaisendon at Omicho 1,800-3,500", "Gold-leaf soft cream 900", "Jibuni duck stew", "Kaga-ryori and great local sake"],
+      "seasonal": {
+        "spring": "Sakura along the castle moats ~April 5-15, later than Tokyo.",
+        "summer": "Hyakumangoku Festival, first weekend of June.",
+        "autumn": "Kenroku-en maples late November.",
+        "winter": "Yukitsuri snow-ropes over Kenroku-en pines; snow-dusted chaya streets; crab season."
+      },
+      "tips": ["Loop bus day pass 800 links all sights", "Most museums closed Tuesdays"]
+    },
+    "hakone": {
+      "name": "Hakone", "name_ja": "箱根", "lat": 35.2323, "lon": 139.1071,
+      "highlights": [
+        {"name": "Hakone Open-Air Museum", "why": "Sculpture park in the mountains: Picasso pavilion, foot bath", "cost_jpy": 1600, "lat": 35.2444, "lon": 139.05},
+        {"name": "Owakudani", "why": "Steaming volcanic valley via ropeway; black eggs 500/5", "cost_jpy": 0, "lat": 35.2444, "lon": 139.0194},
+        {"name": "Hakone Shrine & Lake Ashi", "why": "Lakeside torii photo spot; pirate-ship cruise across the caldera", "cost_jpy": 0, "lat": 35.2046, "lon": 139.0252}
+      ],
+      "hidden_gems": [
+        {"name": "Amazake-chaya", "why": "400-year-old thatched teahouse on the old Tokaido; amazake + chikara-mochi ~900", "cost_jpy": 900, "lat": 35.2123, "lon": 139.029},
+        {"name": "Old Tokaido stone path", "why": "Edo-period cedar-lined highway segment between Moto-Hakone and the teahouse", "cost_jpy": 0, "lat": 35.205, "lon": 139.033},
+        {"name": "Gora Park", "why": "French-style fountain garden; quiet craft workshops", "cost_jpy": 550, "lat": 35.248, "lon": 139.048}
+      ],
+      "food_specialties": ["Kuro-tamago black eggs 500/5", "Yumochi", "Soba with mountain vegetables"],
+      "seasonal": {
+        "spring": "Sakura mid-April (higher altitude = later bloom).",
+        "summer": "Hydrangea train on the Tozan railway, June-July.",
+        "autumn": "Susuki pampas fields at Sengokuhara, gold in late October.",
+        "winter": "Clearest Fuji views from Owakudani and Lake Ashi."
+      },
+      "tips": ["Hakone Freepass (5,000 from Odawara / 6,100 from Shinjuku, 2 days) covers ropeway, boat, buses - almost always worth it", "Do the loop clockwise to beat tour groups"]
+    },
+    "nikko": {
+      "name": "Nikko", "name_ja": "日光", "lat": 36.748, "lon": 139.626,
+      "highlights": [
+        {"name": "Toshogu Shrine", "why": "Ieyasu's gilded mausoleum: sleeping cat, three monkeys, 5-story pagoda", "cost_jpy": 1600, "lat": 36.7581, "lon": 139.5986},
+        {"name": "Shinkyo Bridge", "why": "Sacred vermilion bridge at the mountain gateway", "cost_jpy": 300, "lat": 36.753, "lon": 139.608},
+        {"name": "Kegon Falls", "why": "97m plunge from Lake Chuzenji; elevator to the basin 570", "cost_jpy": 570, "lat": 36.738, "lon": 139.503}
+      ],
+      "hidden_gems": [
+        {"name": "Kanmangafuchi Abyss", "why": "Riverside row of ~70 jizo statues in red caps; said to be uncountable", "cost_jpy": 0, "lat": 36.7437, "lon": 139.5917},
+        {"name": "Tamozawa Imperial Villa", "why": "106-room imperial summer residence blending Edo and Meiji styles", "cost_jpy": 600, "lat": 36.7488, "lon": 139.595}
+      ],
+      "food_specialties": ["Yuba (tofu skin) kaiseki 1,500-3,000", "Mizu yokan", "Nikko soba"],
+      "seasonal": {
+        "spring": "Late sakura mid-April; shrine cedar avenues fresh green.",
+        "summer": "10°C cooler than Tokyo - classic summer retreat.",
+        "autumn": "Irohazaka switchbacks blaze mid-October-early November (expect traffic).",
+        "winter": "Snow-quiet shrines; Chuzenji onsen ice formations."
+      },
+      "tips": ["Tobu Nikko Pass from Asakusa bundles fare + local buses", "World Heritage area is hilly - allow a full day"]
+    },
+    "kamakura": {
+      "name": "Kamakura", "name_ja": "鎌倉", "lat": 35.3192, "lon": 139.5503,
+      "highlights": [
+        {"name": "Great Buddha (Kotoku-in)", "why": "13.5m bronze Amida sitting open-air since 1495", "cost_jpy": 300, "lat": 35.3167, "lon": 139.5357},
+        {"name": "Tsurugaoka Hachimangu", "why": "Samurai-era shrine anchoring the town axis", "cost_jpy": 0, "lat": 35.326, "lon": 139.5566},
+        {"name": "Hasedera", "why": "Eleven-headed Kannon, hydrangea path, bay views", "cost_jpy": 400, "lat": 35.3126, "lon": 139.5333}
+      ],
+      "hidden_gems": [
+        {"name": "Hokokuji", "why": "Small zen temple with a bamboo grove; matcha in the grove ~600", "cost_jpy": 400, "lat": 35.321, "lon": 139.5731},
+        {"name": "Ten-en hiking trail", "why": "Ridge walk linking Kencho-ji to Zuisen-ji - temples + woods in 90 min", "cost_jpy": 0, "lat": 35.333, "lon": 139.568},
+        {"name": "Gokurakuji", "why": "Humble thatched-gate temple beloved by film-makers; almost no tourists", "cost_jpy": 0, "lat": 35.311, "lon": 139.526}
+      ],
+      "food_specialties": ["Shirasu-don (whitebait) 1,200-1,800", "Komachi-dori street snacks", "Hato Sable pigeon cookies"],
+      "seasonal": {
+        "spring": "Dankazura approach lined with sakura, late March-early April.",
+        "summer": "Hydrangeas at Meigetsu-in & Hasedera in June (very crowded weekends).",
+        "autumn": "Late foliage - early December at Engaku-ji.",
+        "winter": "Mild; clear views of Fuji from Inamuragasaki beach."
+      },
+      "tips": ["Ride the Enoden tram car to Hase/Enoshima - it hugs the sea wall", "Arrive before 10am on weekends"]
+    },
+    "takayama": {
+      "name": "Takayama", "name_ja": "高山", "lat": 36.1408, "lon": 137.2531,
+      "highlights": [
+        {"name": "Sanmachi Suji", "why": "Edo merchant streets: dark-wood sake breweries with cedar-ball signs", "cost_jpy": 0, "lat": 36.1424, "lon": 137.2576},
+        {"name": "Miyagawa Morning Market", "why": "Riverside farm stalls till noon; hida-beef buns and pickles", "cost_jpy": 0, "lat": 36.1445, "lon": 137.257},
+        {"name": "Hida Folk Village", "why": "30 relocated gassho-zukuri thatched farmhouses on a hillside", "cost_jpy": 700, "lat": 36.131, "lon": 137.233}
+      ],
+      "hidden_gems": [
+        {"name": "Higashiyama Walking Course", "why": "Temple-to-temple path through the old town's eastern hills - usually deserted", "cost_jpy": 0, "lat": 36.145, "lon": 137.268},
+        {"name": "Sake brewery hopping", "why": "Six breweries in Sanmachi pour 100-300 tasting cups in winter", "cost_jpy": 1000, "lat": 36.1424, "lon": 137.2576}
+      ],
+      "food_specialties": ["Hida beef nigiri 900-1,500/2pc", "Hoba miso breakfast", "Mitarashi dango 100", "Takayama ramen"],
+      "seasonal": {
+        "spring": "Spring Takayama Matsuri April 14-15 - ornate festival floats.",
+        "summer": "Cool mountain base for Kamikochi hiking.",
+        "autumn": "Autumn Matsuri October 9-10; foliage late October.",
+        "winter": "Deep snow, sake season; day trip to Shirakawa-go illuminations (book buses early)."
+      },
+      "tips": ["Everything is walkable from the station", "Pair with Shirakawa-go by Nohi bus (~50 min)"]
+    },
+    "nagoya": {
+      "name": "Nagoya", "name_ja": "名古屋", "lat": 35.1709, "lon": 136.8815,
+      "highlights": [
+        {"name": "Nagoya Castle & Honmaru Palace", "why": "Golden shachihoko dolphins; lavishly rebuilt palace interiors", "cost_jpy": 500, "lat": 35.1856, "lon": 136.8998},
+        {"name": "Atsuta Jingu", "why": "Shrine of the sacred sword, one of Shinto's holiest sites", "cost_jpy": 0, "lat": 35.1278, "lon": 136.9086},
+        {"name": "Osu Shopping District", "why": "1,200 shops mixing temple market, electronics and vintage", "cost_jpy": 0, "lat": 35.1595, "lon": 136.9}
+      ],
+      "hidden_gems": [
+        {"name": "Tokugawa-en", "why": "Daimyo stroll garden next to the shogunal art museum", "cost_jpy": 300, "lat": 35.1846, "lon": 136.932},
+        {"name": "Endoji shotengai", "why": "Faded Showa arcade with standout coffee and craft beer", "cost_jpy": 0, "lat": 35.1757, "lon": 136.893}
+      ],
+      "food_specialties": ["Hitsumabushi (eel three ways) 3,500-5,000", "Miso katsu 1,200-1,800", "Tebasaki wings", "Morning service: coffee buys free toast"],
+      "seasonal": {
+        "spring": "Sakura along the castle moats early April.",
+        "summer": "Very hot; Sekai no Yamachan beer halls at night.",
+        "autumn": "Tokugawa-en maples late November.",
+        "winter": "Illuminations at Noritake Garden."
+      },
+      "tips": ["Often done as a shinkansen stopover - station lockers + 4 hours covers the core"]
+    },
+    "fukuoka": {
+      "name": "Fukuoka", "name_ja": "福岡", "lat": 33.5897, "lon": 130.4207,
+      "highlights": [
+        {"name": "Yatai stalls (Tenjin/Nakasu)", "why": "Open-air food stalls along the river - Fukuoka's signature night out", "cost_jpy": 0, "lat": 33.5902, "lon": 130.4017},
+        {"name": "Ohori Park", "why": "Lake loop + castle ruins + superb modern art museum next door", "cost_jpy": 0, "lat": 33.586, "lon": 130.379},
+        {"name": "Canal City Hakata", "why": "Canal-threaded mall with ramen stadium on 5F", "cost_jpy": 0, "lat": 33.5899, "lon": 130.411}
+      ],
+      "hidden_gems": [
+        {"name": "Nanzoin", "why": "41m bronze reclining Buddha in forested Sasaguri, 25 min by local train", "cost_jpy": 0, "lat": 33.6262, "lon": 130.5607},
+        {"name": "Yanagibashi Rengo Market", "why": "'Fukuoka's kitchen' - tiny fish market where chefs shop, zero tourists", "cost_jpy": 0, "lat": 33.583, "lon": 130.406}
+      ],
+      "food_specialties": ["Hakata tonkotsu ramen 800-1,100", "Motsunabe hot pot 3,000-4,000", "Mentaiko everything", "Yatai session 2,500-4,000"],
+      "seasonal": {
+        "spring": "Sakura at Maizuru Park (castle ruins) late March.",
+        "summer": "Hakata Gion Yamakasa race, July 1-15, 4:59am finale.",
+        "autumn": "Mild; oyster huts open along Itoshima coast.",
+        "winter": "Mentaiko and motsunabe season; mild for Japan."
+      },
+      "tips": ["Yatai etiquette: order one drink + one dish minimum, don't linger", "Airport is 5 min by subway - easiest big-city airport in Japan"]
+    },
+    "sapporo": {
+      "name": "Sapporo", "name_ja": "札幌", "lat": 43.0686, "lon": 141.3508,
+      "highlights": [
+        {"name": "Odori Park & TV Tower", "why": "The city's green spine; festival ground year-round", "cost_jpy": 1000, "lat": 43.061, "lon": 141.356},
+        {"name": "Sapporo Beer Museum", "why": "Brick brewery heritage; tasting set ~800", "cost_jpy": 0, "lat": 43.0717, "lon": 141.3673},
+        {"name": "Mt. Moiwa ropeway", "why": "One of Japan's official top-3 night views", "cost_jpy": 2100, "lat": 43.024, "lon": 141.322}
+      ],
+      "hidden_gems": [
+        {"name": "Moerenuma Park", "why": "Isamu Noguchi's land-art park - glass pyramid, sculpted hills", "cost_jpy": 0, "lat": 43.123, "lon": 141.428},
+        {"name": "Nijo Market", "why": "Compact morning market; uni-ikura don breakfast", "cost_jpy": 0, "lat": 43.057, "lon": 141.359}
+      ],
+      "food_specialties": ["Miso ramen 900-1,200", "Soup curry 1,200-1,600", "Jingisukan lamb BBQ 2,500-4,000", "Dairy soft cream everywhere"],
+      "seasonal": {
+        "spring": "Late sakura - early May at Maruyama Park (BBQ under blossoms is local custom).",
+        "summer": "Best season: 25°C, lavender day trips to Furano in July.",
+        "autumn": "Autumn Fest food stalls in Odori, September.",
+        "winter": "Yuki Matsuri snow festival early February; powder season."
+      },
+      "tips": ["Streets are a numbered grid - navigation is trivial", "Underground walkways link everything in winter"]
+    },
+    "sendai": {
+      "name": "Sendai", "name_ja": "仙台", "lat": 38.2602, "lon": 140.8824,
+      "highlights": [
+        {"name": "Zuihoden Mausoleum", "why": "Date Masamune's ornate cedar-forest tomb", "cost_jpy": 570, "lat": 38.2496, "lon": 140.865},
+        {"name": "Aoba Castle site", "why": "Masamune's equestrian statue over the city panorama", "cost_jpy": 0, "lat": 38.2525, "lon": 140.856},
+        {"name": "Jozenji-dori", "why": "Zelkova-lined avenue, the 'City of Trees' postcard", "cost_jpy": 0, "lat": 38.262, "lon": 140.873}
+      ],
+      "hidden_gems": [
+        {"name": "Gyutan alley (station 3F)", "why": "Row of beef-tongue specialists inside the station - locals queue at Rikyu", "cost_jpy": 0, "lat": 38.2602, "lon": 140.8824},
+        {"name": "Akiu Great Falls", "why": "55m waterfall + onsen town, 50 min by bus", "cost_jpy": 0, "lat": 38.2876, "lon": 140.6457}
+      ],
+      "food_specialties": ["Gyutan set 1,800-2,500", "Zunda (edamame) shakes 400", "Sasa-kamaboko fish cakes"],
+      "seasonal": {
+        "spring": "Sakura at Tsutsujigaoka Park mid-April.",
+        "summer": "Tanabata Festival August 6-8 - giant paper streamers citywide.",
+        "autumn": "Day trip to Naruko Gorge, peak late October.",
+        "winter": "Pageant of Starlight illumination on Jozenji-dori, December."
+      },
+      "tips": ["Loople sightseeing bus day pass 630 hits all the Date sites"]
+    },
+    "matsumoto": {
+      "name": "Matsumoto", "name_ja": "松本", "lat": 36.233, "lon": 137.9656,
+      "highlights": [
+        {"name": "Matsumoto Castle", "why": "Japan's oldest surviving keep - the black 'Crow Castle' against the Alps", "cost_jpy": 700, "lat": 36.2386, "lon": 137.969},
+        {"name": "Nakamachi Street", "why": "Black-and-white kura storehouses turned craft shops", "cost_jpy": 0, "lat": 36.233, "lon": 137.969}
+      ],
+      "hidden_gems": [
+        {"name": "Nawate-dori", "why": "Riverside 'frog street' of tiny stalls - taiyaki and antiques", "cost_jpy": 0, "lat": 36.235, "lon": 137.97},
+        {"name": "Matsumoto City Museum of Art", "why": "Hometown museum of Yayoi Kusama - polka-dot everything", "cost_jpy": 410, "lat": 36.2358, "lon": 137.9777}
+      ],
+      "food_specialties": ["Shinshu soba 900-1,400", "Oyaki dumplings", "Sanzoku-yaki fried chicken", "Apple everything in autumn"],
+      "seasonal": {
+        "spring": "Castle moat sakura + Alps snowcaps, mid-April - the photo.",
+        "summer": "Gateway to Kamikochi alpine valley (bus ~2h).",
+        "autumn": "Soba harvest; crisp Alps views.",
+        "winter": "Ice sculpture festival at the castle, January."
+      },
+      "tips": ["Castle queue builds by 10am in season - go at opening"]
+    },
+    "himeji": {
+      "name": "Himeji", "name_ja": "姫路", "lat": 34.8265, "lon": 134.69,
+      "highlights": [
+        {"name": "Himeji Castle", "why": "Japan's finest original castle, the White Heron; fee rises for non-residents from March 2026", "cost_jpy": 1000, "lat": 34.8394, "lon": 134.6939},
+        {"name": "Koko-en", "why": "Nine Edo-style gardens beside the castle; combo ticket 1,050", "cost_jpy": 310, "lat": 34.839, "lon": 134.689}
+      ],
+      "hidden_gems": [
+        {"name": "Mt. Shosha Engyo-ji", "why": "Mountaintop temple complex from The Last Samurai; ropeway + forest paths", "cost_jpy": 1500, "lat": 34.873, "lon": 134.626}
+      ],
+      "food_specialties": ["Anago (conger eel)", "Himeji oden with ginger soy", "Almond toast kissaten breakfast"],
+      "seasonal": {
+        "spring": "1,000 sakura around the castle - one of Japan's top blossom scenes, early April.",
+        "summer": "Castle is bright but hot; go early.",
+        "autumn": "Koko-en maple tea house.",
+        "winter": "Clear castle photos, few tourists."
+      },
+      "tips": ["Doable as a 3-4h shinkansen stopover between Osaka and Hiroshima - castle is 15 min walk straight up the boulevard"]
+    }
+  }
+}

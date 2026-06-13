@@ -1,0 +1,64 @@
+# SearXNG config for Sakura Fare — local, programmatic (JSON API) use only.
+#
+# Setup: copy this file to `searxng/settings.yml`, then set your own secret_key:
+#   python -c "import secrets; print(secrets.token_hex(32))"
+# The real searxng/settings.yml is gitignored because it holds that secret.
+#
+# Inherits SearXNG's full default settings, overriding only what we need.
+use_default_settings: true
+
+general:
+  instance_name: "Sakura Fare Search"
+  donation_url: false
+  contact_url: false
+  enable_metrics: false
+
+server:
+  secret_key: "GENERATE_ME"  # python -c "import secrets; print(secrets.token_hex(32))"
+  # The limiter/bot-detection blocks programmatic clients. This instance is
+  # bound to localhost only (see run script), so it is safe to disable.
+  limiter: false
+  public_instance: false
+  image_proxy: false
+  method: "GET"
+
+search:
+  # Expose the JSON API the app calls (off by default upstream).
+  formats:
+    - html
+    - json
+  autocomplete: ""
+  default_lang: "en"
+  # Don't fail the whole query if one engine times out.
+  ban_time_on_fail: 5
+  max_ban_time_on_fail: 120
+
+ui:
+  static_use_hash: true
+
+# Lean engine set tuned for reliable agent search: a few general engines so a
+# single upstream rate-limit doesn't blank the results, plus Wikipedia.
+engines:
+  - name: duckduckgo
+    disabled: false
+  - name: bing
+    disabled: false
+  - name: brave
+    disabled: false
+  - name: wikipedia
+    disabled: false
+  - name: wikidata
+    disabled: false
+  # Trim noisy/slow defaults we don't need for travel research.
+  - name: google
+    disabled: false
+  - name: startpage
+    disabled: true
+  - name: qwant
+    disabled: true
+
+outgoing:
+  request_timeout: 6.0
+  max_request_timeout: 10.0
+  pool_connections: 100
+  pool_maxsize: 20

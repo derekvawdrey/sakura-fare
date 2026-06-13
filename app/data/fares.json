@@ -1,0 +1,214 @@
+{
+  "version": "2025-10",
+  "currency": "JPY",
+  "disclaimer": "Published regular-season fares (base fare + limited express / shinkansen surcharge, reserved seat unless noted). Compiled from JR Central / JR East / JR West / JR Kyushu fare tables and Navitime. Fares change with seasonal surcharges (+/- 200-400 JPY) and revisions; verify before purchase.",
+  "sources": [
+    "https://global.jr-central.co.jp/en/info/fare/",
+    "https://www.jreast.co.jp/multi/en/shinkansen/",
+    "https://www.westjr.co.jp/global/en/timetable/",
+    "https://www.jrkyushu.co.jp/english/booking/fare.html",
+    "https://www.navitime.co.jp/transfer/"
+  ],
+  "stations": [
+    {"id": "tokyo", "name": "Tokyo", "name_ja": "東京", "city": "Tokyo", "lat": 35.6812, "lon": 139.7671, "aliases": ["tokyo station", "tokyo eki"]},
+    {"id": "shinagawa", "name": "Shinagawa", "name_ja": "品川", "city": "Tokyo", "lat": 35.6285, "lon": 139.7387, "aliases": []},
+    {"id": "ueno", "name": "Ueno", "name_ja": "上野", "city": "Tokyo", "lat": 35.7141, "lon": 139.7774, "aliases": ["keisei ueno"]},
+    {"id": "shinjuku", "name": "Shinjuku", "name_ja": "新宿", "city": "Tokyo", "lat": 35.6896, "lon": 139.7006, "aliases": []},
+    {"id": "shibuya", "name": "Shibuya", "name_ja": "渋谷", "city": "Tokyo", "lat": 35.658, "lon": 139.7016, "aliases": []},
+    {"id": "asakusa", "name": "Asakusa", "name_ja": "浅草", "city": "Tokyo", "lat": 35.711, "lon": 139.798, "aliases": ["tobu asakusa"]},
+    {"id": "narita-airport", "name": "Narita Airport", "name_ja": "成田空港", "city": "Narita", "lat": 35.772, "lon": 140.3929, "aliases": ["nrt", "narita", "narita terminal 1", "narita terminal 2"]},
+    {"id": "haneda-airport", "name": "Haneda Airport", "name_ja": "羽田空港", "city": "Tokyo", "lat": 35.5494, "lon": 139.7798, "aliases": ["hnd", "haneda"]},
+    {"id": "yokohama", "name": "Yokohama", "name_ja": "横浜", "city": "Yokohama", "lat": 35.466, "lon": 139.6222, "aliases": []},
+    {"id": "shin-yokohama", "name": "Shin-Yokohama", "name_ja": "新横浜", "city": "Yokohama", "lat": 35.5067, "lon": 139.6168, "aliases": []},
+    {"id": "kamakura", "name": "Kamakura", "name_ja": "鎌倉", "city": "Kamakura", "lat": 35.3192, "lon": 139.5503, "aliases": []},
+    {"id": "odawara", "name": "Odawara", "name_ja": "小田原", "city": "Odawara", "lat": 35.2564, "lon": 139.1556, "aliases": []},
+    {"id": "hakone-yumoto", "name": "Hakone-Yumoto", "name_ja": "箱根湯本", "city": "Hakone", "lat": 35.2323, "lon": 139.1071, "aliases": ["hakone"]},
+    {"id": "kawaguchiko", "name": "Kawaguchiko", "name_ja": "河口湖", "city": "Fujikawaguchiko", "lat": 35.5172, "lon": 138.7647, "aliases": ["lake kawaguchi", "mt fuji", "fuji five lakes"]},
+    {"id": "matsumoto", "name": "Matsumoto", "name_ja": "松本", "city": "Matsumoto", "lat": 36.233, "lon": 137.9656, "aliases": []},
+    {"id": "nagano", "name": "Nagano", "name_ja": "長野", "city": "Nagano", "lat": 36.643, "lon": 138.1888, "aliases": []},
+    {"id": "kanazawa", "name": "Kanazawa", "name_ja": "金沢", "city": "Kanazawa", "lat": 36.578, "lon": 136.648, "aliases": []},
+    {"id": "takayama", "name": "Takayama", "name_ja": "高山", "city": "Takayama", "lat": 36.1408, "lon": 137.2531, "aliases": ["hida takayama"]},
+    {"id": "niigata", "name": "Niigata", "name_ja": "新潟", "city": "Niigata", "lat": 37.9123, "lon": 139.0617, "aliases": []},
+    {"id": "sendai", "name": "Sendai", "name_ja": "仙台", "city": "Sendai", "lat": 38.2602, "lon": 140.8824, "aliases": []},
+    {"id": "shin-aomori", "name": "Shin-Aomori", "name_ja": "新青森", "city": "Aomori", "lat": 40.8272, "lon": 140.6935, "aliases": ["aomori"]},
+    {"id": "shin-hakodate-hokuto", "name": "Shin-Hakodate-Hokuto", "name_ja": "新函館北斗", "city": "Hakodate", "lat": 41.9046, "lon": 140.6486, "aliases": ["hakodate"]},
+    {"id": "sapporo", "name": "Sapporo", "name_ja": "札幌", "city": "Sapporo", "lat": 43.0686, "lon": 141.3508, "aliases": []},
+    {"id": "nagoya", "name": "Nagoya", "name_ja": "名古屋", "city": "Nagoya", "lat": 35.1709, "lon": 136.8815, "aliases": []},
+    {"id": "kyoto", "name": "Kyoto", "name_ja": "京都", "city": "Kyoto", "lat": 34.9858, "lon": 135.7585, "aliases": []},
+    {"id": "shin-osaka", "name": "Shin-Osaka", "name_ja": "新大阪", "city": "Osaka", "lat": 34.7335, "lon": 135.5002, "aliases": []},
+    {"id": "osaka", "name": "Osaka", "name_ja": "大阪", "city": "Osaka", "lat": 34.7025, "lon": 135.4959, "aliases": ["umeda", "osaka umeda"]},
+    {"id": "namba", "name": "Namba", "name_ja": "難波", "city": "Osaka", "lat": 34.6663, "lon": 135.5011, "aliases": ["osaka namba", "dotonbori"]},
+    {"id": "kansai-airport", "name": "Kansai Airport", "name_ja": "関西空港", "city": "Osaka", "lat": 34.432, "lon": 135.2304, "aliases": ["kix", "kansai international"]},
+    {"id": "nara", "name": "Nara", "name_ja": "奈良", "city": "Nara", "lat": 34.6809, "lon": 135.82, "aliases": ["kintetsu nara"]},
+    {"id": "shin-kobe", "name": "Shin-Kobe", "name_ja": "新神戸", "city": "Kobe", "lat": 34.7066, "lon": 135.1962, "aliases": []},
+    {"id": "sannomiya", "name": "Sannomiya (Kobe)", "name_ja": "三ノ宮", "city": "Kobe", "lat": 34.6946, "lon": 135.1947, "aliases": ["kobe", "kobe sannomiya"]},
+    {"id": "himeji", "name": "Himeji", "name_ja": "姫路", "city": "Himeji", "lat": 34.8265, "lon": 134.69, "aliases": []},
+    {"id": "okayama", "name": "Okayama", "name_ja": "岡山", "city": "Okayama", "lat": 34.666, "lon": 133.918, "aliases": []},
+    {"id": "hiroshima", "name": "Hiroshima", "name_ja": "広島", "city": "Hiroshima", "lat": 34.3975, "lon": 132.4753, "aliases": []},
+    {"id": "miyajimaguchi", "name": "Miyajimaguchi", "name_ja": "宮島口", "city": "Hatsukaichi", "lat": 34.3122, "lon": 132.303, "aliases": []},
+    {"id": "miyajima", "name": "Miyajima (pier)", "name_ja": "宮島", "city": "Hatsukaichi", "lat": 34.3007, "lon": 132.3219, "aliases": ["itsukushima", "miyajima island"]},
+    {"id": "hakata", "name": "Hakata", "name_ja": "博多", "city": "Fukuoka", "lat": 33.5897, "lon": 130.4207, "aliases": ["fukuoka"]},
+    {"id": "kumamoto", "name": "Kumamoto", "name_ja": "熊本", "city": "Kumamoto", "lat": 32.79, "lon": 130.689, "aliases": []},
+    {"id": "kagoshima-chuo", "name": "Kagoshima-Chuo", "name_ja": "鹿児島中央", "city": "Kagoshima", "lat": 31.584, "lon": 130.542, "aliases": ["kagoshima"]},
+    {"id": "tobu-nikko", "name": "Tobu-Nikko", "name_ja": "東武日光", "city": "Nikko", "lat": 36.748, "lon": 139.626, "aliases": ["nikko"]}
+  ],
+  "routes": [
+    {"between": ["tokyo", "kyoto"], "options": [
+      {"line": "Tokaido Shinkansen", "train": "Nozomi (reserved)", "fare_jpy": 14170, "duration_min": 135, "source": "JR Central fare table"},
+      {"line": "Tokaido Shinkansen", "train": "Hikari (reserved)", "fare_jpy": 13850, "duration_min": 160, "source": "JR Central fare table"},
+      {"line": "Tokaido Shinkansen", "train": "Nozomi/Hikari (unreserved)", "fare_jpy": 13320, "duration_min": 140, "source": "JR Central fare table"}
+    ]},
+    {"between": ["tokyo", "shin-osaka"], "options": [
+      {"line": "Tokaido Shinkansen", "train": "Nozomi (reserved)", "fare_jpy": 14720, "duration_min": 153, "source": "JR Central fare table"},
+      {"line": "Tokaido Shinkansen", "train": "Nozomi/Hikari (unreserved)", "fare_jpy": 13870, "duration_min": 160, "source": "JR Central fare table"}
+    ]},
+    {"between": ["tokyo", "nagoya"], "options": [
+      {"line": "Tokaido Shinkansen", "train": "Nozomi (reserved)", "fare_jpy": 11300, "duration_min": 95, "source": "JR Central fare table"},
+      {"line": "Tokaido Shinkansen", "train": "Nozomi/Hikari (unreserved)", "fare_jpy": 10560, "duration_min": 100, "source": "JR Central fare table"}
+    ]},
+    {"between": ["tokyo", "odawara"], "options": [
+      {"line": "Tokaido Shinkansen", "train": "Kodama/Hikari (unreserved)", "fare_jpy": 3280, "duration_min": 35, "source": "JR Central fare table"}
+    ]},
+    {"between": ["shinjuku", "hakone-yumoto"], "options": [
+      {"line": "Odakyu Line", "train": "Romancecar (all reserved)", "fare_jpy": 2470, "duration_min": 85, "source": "Odakyu published fare"}
+    ]},
+    {"between": ["odawara", "hakone-yumoto"], "options": [
+      {"line": "Hakone Tozan Railway", "train": "Local", "fare_jpy": 360, "duration_min": 15, "source": "Hakone Tozan published fare"}
+    ]},
+    {"between": ["tokyo", "hiroshima"], "options": [
+      {"line": "Tokaido/Sanyo Shinkansen", "train": "Nozomi (reserved)", "fare_jpy": 19760, "duration_min": 237, "source": "JR Central/West fare table"}
+    ]},
+    {"between": ["tokyo", "okayama"], "options": [
+      {"line": "Tokaido/Sanyo Shinkansen", "train": "Nozomi (reserved)", "fare_jpy": 17660, "duration_min": 196, "source": "JR Central/West fare table"}
+    ]},
+    {"between": ["tokyo", "hakata"], "options": [
+      {"line": "Tokaido/Sanyo Shinkansen", "train": "Nozomi (reserved)", "fare_jpy": 23390, "duration_min": 300, "source": "JR Central/West fare table"}
+    ]},
+    {"between": ["kyoto", "shin-osaka"], "options": [
+      {"line": "Tokaido Shinkansen", "train": "Any (unreserved)", "fare_jpy": 1450, "duration_min": 15, "source": "JR Central fare table"}
+    ]},
+    {"between": ["kyoto", "osaka"], "options": [
+      {"line": "JR Kyoto Line", "train": "Special Rapid", "fare_jpy": 580, "duration_min": 29, "source": "JR West fare table"},
+      {"line": "Hankyu Kyoto Line", "train": "Limited Express (no surcharge)", "fare_jpy": 410, "duration_min": 45, "source": "Hankyu published fare"}
+    ]},
+    {"between": ["kyoto", "nagoya"], "options": [
+      {"line": "Tokaido Shinkansen", "train": "Nozomi (reserved)", "fare_jpy": 5910, "duration_min": 35, "source": "JR Central fare table"}
+    ]},
+    {"between": ["nagoya", "shin-osaka"], "options": [
+      {"line": "Tokaido Shinkansen", "train": "Nozomi (reserved)", "fare_jpy": 6680, "duration_min": 50, "source": "JR Central fare table"}
+    ]},
+    {"between": ["kyoto", "hiroshima"], "options": [
+      {"line": "Tokaido/Sanyo Shinkansen", "train": "Nozomi (reserved)", "fare_jpy": 11620, "duration_min": 100, "source": "JR West fare table"}
+    ]},
+    {"between": ["shin-osaka", "hiroshima"], "options": [
+      {"line": "Sanyo Shinkansen", "train": "Nozomi/Mizuho (reserved)", "fare_jpy": 10620, "duration_min": 85, "source": "JR West fare table"}
+    ]},
+    {"between": ["shin-osaka", "okayama"], "options": [
+      {"line": "Sanyo Shinkansen", "train": "Nozomi (reserved)", "fare_jpy": 6460, "duration_min": 45, "source": "JR West fare table"}
+    ]},
+    {"between": ["shin-osaka", "hakata"], "options": [
+      {"line": "Sanyo Shinkansen", "train": "Nozomi/Mizuho (reserved)", "fare_jpy": 15600, "duration_min": 150, "source": "JR West fare table"}
+    ]},
+    {"between": ["shin-osaka", "shin-kobe"], "options": [
+      {"line": "Sanyo Shinkansen", "train": "Any (unreserved)", "fare_jpy": 1530, "duration_min": 13, "source": "JR West fare table"}
+    ]},
+    {"between": ["osaka", "sannomiya"], "options": [
+      {"line": "JR Kobe Line", "train": "Special Rapid", "fare_jpy": 420, "duration_min": 21, "source": "JR West fare table"},
+      {"line": "Hanshin Main Line", "train": "Limited Express (no surcharge)", "fare_jpy": 330, "duration_min": 33, "source": "Hanshin published fare"}
+    ]},
+    {"between": ["hiroshima", "hakata"], "options": [
+      {"line": "Sanyo Shinkansen", "train": "Nozomi/Mizuho (reserved)", "fare_jpy": 9890, "duration_min": 67, "source": "JR West fare table"}
+    ]},
+    {"between": ["hiroshima", "miyajimaguchi"], "options": [
+      {"line": "JR Sanyo Line", "train": "Local", "fare_jpy": 420, "duration_min": 27, "source": "JR West fare table", "notes": "Miyajima ferry is +300 JPY each way (incl. visitor tax)"}
+    ]},
+    {"between": ["miyajimaguchi", "miyajima"], "options": [
+      {"line": "JR Miyajima Ferry", "train": "Ferry", "fare_jpy": 300, "duration_min": 10, "source": "JR West ferry fare 200 + Miyajima visitor tax 100", "notes": "Matsudai ferry same price; tax introduced Oct 2023"}
+    ]},
+    {"between": ["hakata", "kumamoto"], "options": [
+      {"line": "Kyushu Shinkansen", "train": "Mizuho/Sakura (reserved)", "fare_jpy": 5230, "duration_min": 40, "source": "JR Kyushu fare table"}
+    ]},
+    {"between": ["hakata", "kagoshima-chuo"], "options": [
+      {"line": "Kyushu Shinkansen", "train": "Mizuho (reserved)", "fare_jpy": 10640, "duration_min": 80, "source": "JR Kyushu fare table"}
+    ]},
+    {"between": ["tokyo", "sendai"], "options": [
+      {"line": "Tohoku Shinkansen", "train": "Hayabusa (all reserved)", "fare_jpy": 11410, "duration_min": 92, "source": "JR East fare table"}
+    ]},
+    {"between": ["tokyo", "shin-aomori"], "options": [
+      {"line": "Tohoku Shinkansen", "train": "Hayabusa (all reserved)", "fare_jpy": 17670, "duration_min": 180, "source": "JR East fare table"}
+    ]},
+    {"between": ["tokyo", "shin-hakodate-hokuto"], "options": [
+      {"line": "Tohoku/Hokkaido Shinkansen", "train": "Hayabusa (all reserved)", "fare_jpy": 23430, "duration_min": 235, "source": "JR East/Hokkaido fare table"}
+    ]},
+    {"between": ["shin-hakodate-hokuto", "sapporo"], "options": [
+      {"line": "JR Hakodate Main Line", "train": "Ltd Exp Hokuto (reserved)", "fare_jpy": 9440, "duration_min": 210, "source": "JR Hokkaido fare table"}
+    ]},
+    {"between": ["tokyo", "niigata"], "options": [
+      {"line": "Joetsu Shinkansen", "train": "Toki (reserved)", "fare_jpy": 10760, "duration_min": 100, "source": "JR East fare table"}
+    ]},
+    {"between": ["tokyo", "nagano"], "options": [
+      {"line": "Hokuriku Shinkansen", "train": "Kagayaki/Asama (reserved)", "fare_jpy": 8340, "duration_min": 85, "source": "JR East fare table"}
+    ]},
+    {"between": ["tokyo", "kanazawa"], "options": [
+      {"line": "Hokuriku Shinkansen", "train": "Kagayaki (all reserved)", "fare_jpy": 14380, "duration_min": 150, "source": "JR East/West fare table"}
+    ]},
+    {"between": ["kanazawa", "kyoto"], "options": [
+      {"line": "Hokuriku Shinkansen + Ltd Exp Thunderbird (transfer at Tsuruga)", "train": "Tsurugi + Thunderbird (reserved)", "fare_jpy": 7790, "duration_min": 130, "source": "JR West fare table (post-2024 Tsuruga extension)"}
+    ]},
+    {"between": ["nagoya", "takayama"], "options": [
+      {"line": "JR Takayama Main Line", "train": "Ltd Exp Hida (reserved)", "fare_jpy": 6140, "duration_min": 145, "source": "JR Central fare table"}
+    ]},
+    {"between": ["shinjuku", "matsumoto"], "options": [
+      {"line": "JR Chuo Main Line", "train": "Ltd Exp Azusa (all reserved)", "fare_jpy": 6620, "duration_min": 150, "source": "JR East fare table"}
+    ]},
+    {"between": ["shinjuku", "kawaguchiko"], "options": [
+      {"line": "JR Chuo Line + Fujikyuko Line", "train": "Ltd Exp Fuji Excursion (all reserved)", "fare_jpy": 4130, "duration_min": 115, "source": "JR East / Fujikyu fare table"}
+    ]},
+    {"between": ["narita-airport", "tokyo"], "options": [
+      {"line": "JR Narita Express", "train": "N'EX (all reserved)", "fare_jpy": 3070, "duration_min": 55, "source": "JR East fare table"}
+    ]},
+    {"between": ["narita-airport", "ueno"], "options": [
+      {"line": "Keisei Skyliner", "train": "Skyliner (all reserved)", "fare_jpy": 2580, "duration_min": 45, "source": "Keisei published fare"}
+    ]},
+    {"between": ["haneda-airport", "shinagawa"], "options": [
+      {"line": "Keikyu Airport Line", "train": "Express", "fare_jpy": 330, "duration_min": 12, "source": "Keikyu published fare"}
+    ]},
+    {"between": ["kansai-airport", "kyoto"], "options": [
+      {"line": "JR Kansai Airport Line", "train": "Ltd Exp Haruka (reserved)", "fare_jpy": 3640, "duration_min": 80, "source": "JR West fare table"}
+    ]},
+    {"between": ["kansai-airport", "namba"], "options": [
+      {"line": "Nankai Line", "train": "Ltd Exp rapi:t (all reserved)", "fare_jpy": 1490, "duration_min": 38, "source": "Nankai published fare"}
+    ]},
+    {"between": ["kyoto", "nara"], "options": [
+      {"line": "JR Nara Line", "train": "Miyakoji Rapid", "fare_jpy": 720, "duration_min": 45, "source": "JR West fare table"},
+      {"line": "Kintetsu Kyoto Line", "train": "Express (no surcharge)", "fare_jpy": 760, "duration_min": 50, "source": "Kintetsu published fare"}
+    ]},
+    {"between": ["osaka", "nara"], "options": [
+      {"line": "JR Yamatoji Line", "train": "Yamatoji Rapid", "fare_jpy": 820, "duration_min": 50, "source": "JR West fare table"}
+    ]},
+    {"between": ["namba", "nara"], "options": [
+      {"line": "Kintetsu Nara Line", "train": "Rapid Express (no surcharge)", "fare_jpy": 680, "duration_min": 40, "source": "Kintetsu published fare"}
+    ]},
+    {"between": ["tokyo", "kamakura"], "options": [
+      {"line": "JR Yokosuka Line", "train": "Local", "fare_jpy": 950, "duration_min": 55, "source": "JR East fare table"}
+    ]},
+    {"between": ["tokyo", "yokohama"], "options": [
+      {"line": "JR Tokaido Line", "train": "Local/Rapid", "fare_jpy": 480, "duration_min": 25, "source": "JR East fare table"}
+    ]},
+    {"between": ["asakusa", "tobu-nikko"], "options": [
+      {"line": "Tobu Nikko Line", "train": "Ltd Exp Kegon (all reserved)", "fare_jpy": 3050, "duration_min": 110, "source": "Tobu published fare"}
+    ]},
+    {"between": ["shinjuku", "tokyo"], "options": [
+      {"line": "JR Chuo Line", "train": "Rapid", "fare_jpy": 210, "duration_min": 14, "source": "JR East fare table"}
+    ]}
+  ],
+  "city_transit": [
+    {"city": "Tokyo", "typical_ride_jpy": 210, "day_pass_jpy": 800, "day_pass_name": "Tokyo Metro 24h ticket", "notes": "Metro fares 180-330 JPY by distance; JR Yamanote 150-210 JPY"},
+    {"city": "Kyoto", "typical_ride_jpy": 230, "day_pass_jpy": 1100, "day_pass_name": "Kyoto subway+bus 1-day pass", "notes": "City bus flat fare 230 JPY; subway 220-360 JPY"},
+    {"city": "Osaka", "typical_ride_jpy": 240, "day_pass_jpy": 820, "day_pass_name": "Osaka Metro Enjoy Eco Card (weekday)", "notes": "Metro fares 190-390 JPY by distance"},
+    {"city": "Nagoya", "typical_ride_jpy": 240, "day_pass_jpy": 760, "day_pass_name": "Subway 1-day pass", "notes": "Subway fares 210-340 JPY"},
+    {"city": "Fukuoka", "typical_ride_jpy": 260, "day_pass_jpy": 640, "day_pass_name": "Subway 1-day pass", "notes": "Subway fares 210-380 JPY"},
+    {"city": "Hiroshima", "typical_ride_jpy": 220, "day_pass_jpy": 700, "day_pass_name": "Streetcar 1-day pass", "notes": "Hiroden streetcar flat 220 JPY in city"},
+    {"city": "Sapporo", "typical_ride_jpy": 250, "day_pass_jpy": 830, "day_pass_name": "Subway 1-day pass", "notes": "Subway fares 210-380 JPY"}
+  ]
+}
