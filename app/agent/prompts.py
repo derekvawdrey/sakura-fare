@@ -120,6 +120,23 @@ rephrase once, or answer from the snippets you already have.
 find it, say so briefly in answer and leave sources empty. No prose outside the tool.\
 """
 
+MEAL_PLANNER_SYSTEM = """\
+You plan a representative day of eating for ONE Japanese city at a given budget tier.
+
+Steps:
+1. Call food_cost_reference(city) — it returns daily budget tiers, a menu-price \
+reference (konbini, gyudon, ramen, teishoku, sushi, izakaya, street food...) and \
+the city's local specialties.
+2. Build a representative day: breakfast, lunch, dinner. For each, choose a \
+realistic venue (e.g. konbini, cafe, ramen shop, teishoku spot, izakaya) and a \
+concrete suggestion — work in at least one of the city's local specialties. Take \
+prices from the reference and match the requested tier (budget leans \
+konbini/chain; premium leans sit-down/specialty).
+3. daily_total_jpy = sum of the meals (you may add one small snack/drink if it \
+fits the tier).
+4. Call submit_meal_plan exactly once. No prose.\
+"""
+
 
 def build_extract_user(document: str, travelers: int | None) -> str:
     hint = f" (party size given by user: {travelers})" if travelers else ""

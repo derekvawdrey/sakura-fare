@@ -369,6 +369,14 @@ button.secondary:hover { background: var(--sakura-100); }
   font-size: .75rem; background: #fdf3e4; color: #8a6432;
   border: 1px solid #f0dfc0; border-radius: 999px; padding: .15rem .6rem;
 }
+.meal-plan { display: flex; flex-direction: column; gap: .2rem; margin: .35rem 0 .15rem; }
+.meal-row {
+  display: grid; grid-template-columns: auto 1fr auto; gap: .5rem;
+  align-items: baseline; font-size: .82rem;
+}
+.meal-slot { color: var(--sakura-900); text-transform: capitalize; white-space: nowrap; }
+.meal-where { color: #6b5560; overflow: hidden; text-overflow: ellipsis; }
+.meal-cost { color: #8a6432; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .src-list { font-size: .72rem; color: #a08790; margin-top: .5rem; word-break: break-all; }
 
 .table-wrap { overflow-x: auto; }

@@ -71,12 +71,26 @@ class DayPlanEntry(BaseModel):
     evening: str
 
 
+class Meal(BaseModel):
+    slot: Literal["breakfast", "lunch", "dinner"]
+    venue: str
+    suggestion: str
+    cost_jpy: int = Field(ge=0)
+
+
+class MealPlan(BaseModel):
+    daily: list[Meal] = []
+    daily_total_jpy: int = Field(ge=0)
+    notes: list[str] = []
+
+
 class CityPlan(BaseModel):
     city: str
     days: int = Field(ge=1)
     food_tier: Literal["budget", "standard", "premium"]
     food_daily_jpy: int = Field(ge=500, le=40_000)
     food_notes: list[str] = []
+    meals: MealPlan | None = None
     transit_recommendation: str
     transit_total_jpy: int = Field(ge=0)
     transit_basis: Basis = "curated"

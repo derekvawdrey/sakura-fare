@@ -393,6 +393,18 @@ function renderCities(plans) {
     const foodLine = el("p", "food-line");
     foodLine.innerHTML = `<b>${p.food_tier}</b> tier · ${yen(p.food_daily_jpy)}/day × ${p.days} = <b>${yen(p.food_total_jpy)}</b> per person`;
     colA.appendChild(foodLine);
+    if (p.meals && p.meals.daily && p.meals.daily.length) {
+      const icon = { breakfast: "🌅", lunch: "🍱", dinner: "🍶" };
+      const meals = el("div", "meal-plan");
+      p.meals.daily.forEach((m) => {
+        const row = el("div", "meal-row");
+        row.appendChild(el("span", "meal-slot", `${icon[m.slot] || "🍽️"} ${m.slot}`));
+        row.appendChild(el("span", "meal-where", `${m.venue} — ${m.suggestion}`));
+        row.appendChild(el("span", "meal-cost", yen(m.cost_jpy)));
+        meals.appendChild(row);
+      });
+      colA.appendChild(meals);
+    }
     if (p.food_notes && p.food_notes.length) {
       const chips = el("div", "chip-row");
       p.food_notes.forEach((n) => chips.appendChild(el("span", "food-chip", n)));

@@ -11,7 +11,9 @@ from typing import Any, Awaitable, Callable
 
 from app.agent.client import LLMClient
 from app.agent.loop import EventSink
+from app.agent.meals import run_meal_planner
 from app.agent.research import run_research
+from app.api.schemas import MealPlan
 from app.services.fares import FareRepository
 from app.services.gmaps_fares import GmapsFareService
 from app.services.places import PlacesRepository
@@ -89,6 +91,30 @@ SUBMIT_FINDINGS = _fn(
         "sources": {"type": "array", "items": {"type": "string"}, "description": "URLs you used"},
     },
     ["answer"],
+)
+
+SUBMIT_MEAL_PLAN = _fn(
+    "submit_meal_plan",
+    "Submit the representative daily meal plan. Call exactly once.",
+    {
+        "daily": {
+            "type": "array",
+            "description": "breakfast, lunch and dinner, in that order",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "slot": {"type": "string", "enum": ["breakfast", "lunch", "dinner"]},
+                    "venue": {"type": "string", "description": "e.g. 'konbini', 'ramen shop', 'izakaya'"},
+                    "suggestion": {"type": "string", "description": "a dish or local specialty"},
+                    "cost_jpy": {"type": "integer"},
+                },
+                "required": ["slot", "venue", "suggestion", "cost_jpy"],
+            },
+        },
+        "daily_total_jpy": {"type": "integer", "description": "sum of the meals (+ optional snack)"},
+        "notes": {"type": "array", "items": {"type": "string"}, "description": "optional splurge / must-try note"},
+    },
+    ["daily", "daily_total_jpy"],
 )
 
 CITY_GUIDE = _fn(
@@ -314,6 +340,18 @@ class ToolBox:
             self._llm,
             question,
             tool_definitions=[WEB_SEARCH, FETCH_PAGE, SUBMIT_FINDINGS],
+            execute_tool=self.execute,
+            emit=lambda kind, title, detail=None: self.emit(kind, f"↳ {title}", detail),
+        )
+
+    async def plan_meals(self, city: str, style: str) -> MealPlan | None:
+        """Run the meal-planner subagent for one city at a budget tier."""
+        if self._llm is None:
+            return None
+        self.emit("tool_call", "meal-planner subagent", f"{city} ({style})")
+        return await run_meal_planner(
+            self._llm, city, style,
+            tool_definitions=[FOOD_REFERENCE, SUBMIT_MEAL_PLAN],
             execute_tool=self.execute,
             emit=lambda kind, title, detail=None: self.emit(kind, f"↳ {title}", detail),
         )

@@ -145,6 +145,12 @@ class AnalysisPipeline:
             emit("error", f"{stay.city} guide failed — using curated fallback", str(exc)[:300])
             plan = self._fallback_city_plan(stay)
 
+        meals = await self._toolbox.plan_meals(plan.city, plan.food_tier)
+        if meals and meals.daily:
+            plan.meals = meals
+            if meals.daily_total_jpy:
+                plan.food_daily_jpy = meals.daily_total_jpy  # meals are the source of truth
+
         plan.food_total_jpy = plan.food_daily_jpy * plan.days
         coords = self._places.city_coords(plan.city) or self._station_coords(plan.city)
         if coords is None:
