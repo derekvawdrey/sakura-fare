@@ -10,6 +10,7 @@ import json
 from typing import Any, Awaitable, Callable
 
 from app.services.fares import FareRepository
+from app.services.gmaps_fares import GmapsFareService
 from app.services.places import PlacesRepository
 from app.services.search import WebSearchService
 
@@ -48,6 +49,16 @@ LOOKUP_ROUTE_FARE = _fn(
         "to_station": {"type": "string"},
     },
     ["from_station", "to_station"],
+)
+
+LOOKUP_TRANSIT_FARE = _fn(
+    "lookup_transit_fare",
+    "Live public-transit fare from Google Maps between ANY two places (stations, cities, addresses, landmarks) — the real fare for trains (incl. Shinkansen, surcharge included), subways, buses, ferries and mixed routes. Returns fare_jpy, duration and the route. This is the primary fare tool; call once per origin->destination.",
+    {
+        "origin": {"type": "string", "description": "start place, e.g. 'Gion, Kyoto' or 'Kyoto Station'"},
+        "destination": {"type": "string", "description": "end place, e.g. 'Kinkaku-ji Temple'"},
+    },
+    ["origin", "destination"],
 )
 
 WEB_SEARCH = _fn(
@@ -223,10 +234,12 @@ SUBMIT_CITY_PLAN = _fn(
 class ToolBox:
     """Bundles the data services and dispatches tool calls for any phase."""
 
-    def __init__(self, fares: FareRepository, places: PlacesRepository, search: WebSearchService):
+    def __init__(self, fares: FareRepository, places: PlacesRepository, search: WebSearchService,
+                 gmaps: GmapsFareService | None = None):
         self._fares = fares
         self._places = places
         self._search = search
+        self._gmaps = gmaps or GmapsFareService.from_settings()
 
     async def execute(self, name: str, args: dict[str, Any]) -> str:
         try:
@@ -241,6 +254,9 @@ class ToolBox:
         if name == "lookup_route_fare":
             return self._fares.route_fare(
                 str(args.get("from_station", "")), str(args.get("to_station", "")))
+        if name == "lookup_transit_fare":
+            return await self._transit_fare(
+                str(args.get("origin", "")), str(args.get("destination", "")))
         if name == "city_transit_info":
             return self._fares.city_transit(str(args.get("city", "")))
         if name == "city_guide":
@@ -254,8 +270,50 @@ class ToolBox:
             return await self._search.fetch_page(str(args.get("url", "")))
         return {"ok": False, "error": f"Unknown tool '{name}'"}
 
+    async def _transit_fare(self, origin: str, destination: str) -> dict[str, Any]:
+        """Primary fare path: live Google Maps fare with a silent curated fallback."""
+        result = await self._gmaps.transit_fare(origin, destination)
+        if result.get("ok") and result.get("fare_jpy") is not None:
+            result.setdefault("basis", "published")  # a real, live fare
+            return result
+        # Maps showed no fare (or the scraper failed) — fall back to the curated
+        # dataset/estimate so a segment is never left unpriced.
+        curated = _normalize_curated(self._fares.route_fare(origin, destination), origin, destination)
+        if curated is not None:
+            reason = result.get("error") or result.get("note") or "Google Maps showed no fare."
+            curated["note"] = f"{curated.get('note', '')} [fallback: {reason}]".strip()
+            return curated
+        return {
+            "ok": False, "from": origin, "to": destination,
+            "error": result.get("error") or "No fare from Google Maps and no curated match.",
+        }
+
+
+def _normalize_curated(curated: dict[str, Any], origin: str, destination: str) -> dict[str, Any] | None:
+    """Reshape FareRepository.route_fare output into the transit-fare result shape."""
+    if not curated.get("ok"):
+        return None
+    options = curated.get("options") or []
+    if not options or options[0].get("fare_jpy") is None:
+        return None
+    opt = options[0]
+    frm, to = curated.get("from"), curated.get("to")
+    return {
+        "ok": True,
+        "source": opt.get("source") or "Curated JR fare dataset",
+        "from": frm.get("name") if isinstance(frm, dict) else origin,
+        "to": to.get("name") if isinstance(to, dict) else destination,
+        "mode": "train",
+        "fare_jpy": opt.get("fare_jpy"),
+        "fare_text": f"¥{opt['fare_jpy']:,}",
+        "duration": f"{opt['duration_min']} min" if opt.get("duration_min") else "",
+        "route": " ".join(x for x in (opt.get("line"), opt.get("train")) if x),
+        "basis": curated.get("basis", "estimated"),
+        "note": curated.get("note", ""),
+    }
+
 
 # Phase tool sets
 EXTRACT_TOOLS = [SEARCH_STATION, SUBMIT_ITINERARY]
-RAIL_TOOLS = [SEARCH_STATION, LOOKUP_ROUTE_FARE, WEB_SEARCH, SUBMIT_RAIL]
-CITY_TOOLS = [CITY_GUIDE, FOOD_REFERENCE, CITY_TRANSIT, WEB_SEARCH, FETCH_PAGE, SUBMIT_CITY_PLAN]
+RAIL_TOOLS = [LOOKUP_TRANSIT_FARE, SUBMIT_RAIL]
+CITY_TOOLS = [CITY_GUIDE, FOOD_REFERENCE, CITY_TRANSIT, LOOKUP_TRANSIT_FARE, WEB_SEARCH, FETCH_PAGE, SUBMIT_CITY_PLAN]

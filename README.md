@@ -4,7 +4,9 @@ Upload a travel-plan document (PDF / DOCX / TXT / MD) and an **agentic pipeline
 running on your local LLM** (Qwen3.6-27B via llama.cpp on `localhost:8020`)
 produces a full cost-and-experience analysis:
 
-- **Rail costs** for every segment, priced against real published JR fares
+- **Rail costs** for every segment, priced from **live Google Maps transit
+  fares** (a Dockerized Google Maps scraper — real fares incl. Shinkansen and
+  buses), with a curated JR fare dataset as the offline fallback
 - **Food budget** per city (tiered: budget / standard / premium, city-adjusted)
 - **Local transit** recommendations (day passes vs single rides)
 - **City guides**: top highlights + hidden gems with admission fees, day-by-day
@@ -28,6 +30,17 @@ Requires the llama.cpp server from your opencode config on
 Web search and geocoding degrade gracefully when offline — analysis falls back
 to the curated datasets.
 
+**Live fares** come from a Dockerized Google Maps scraper. Build the image once:
+
+```bash
+git clone https://github.com/derekvawdrey/google-maps-scraper
+docker build -t gmaps-scraper:fares google-maps-scraper
+```
+
+If the image is missing or Docker is down, fare lookups fall back to the curated
+JR dataset automatically. Disable the scraper entirely with
+`SAKURA_GMAPS_FARES_ENABLED=false`.
+
 Sample PDF to test with: `uv run python scripts/make_sample_pdf.py` →
 `samples/japan-trip.pdf`. Choose **Quick** (rail only, ~3-5 min) or **Full**
 (everything, ~10-20 min on local hardware; the UI streams agent progress live).
@@ -43,8 +56,9 @@ FastAPI ── JobStore (serializes runs; the local model fits one at a time)
    ▼
 AnalysisPipeline — 4 phases, each a focused tool-calling agent run:
    1. EXTRACT   document → structured stays + travel segments
-   2. RAIL      price every segment   tools: search_station, lookup_route_fare,
-                                              web_search (verify estimates)
+   2. RAIL      price every segment   tool: lookup_transit_fare — live Google
+                                            Maps fares (gmaps-fares container);
+                                            curated dataset as silent fallback
    3. CITY ×N   per-city enrichment   tools: city_guide, food_cost_reference,
                 (full depth only)             city_transit_info, web_search,
                                               fetch_page
@@ -53,7 +67,7 @@ AnalysisPipeline — 4 phases, each a focused tool-calling agent run:
    ▼
 Data layer
    fares.json   ~45 routes, published JR fares w/ sources; distance-based
-                estimator fallback (always flagged `estimated`)
+                estimator — the offline FALLBACK when Google Maps has no fare
    places.json  curated guides for 16 cities: highlights & hidden gems with
                 fees + coordinates, food specialties, seasonal notes, tips
    food.json    typical meal prices + daily budget tiers, city multipliers

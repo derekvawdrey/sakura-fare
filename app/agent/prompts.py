@@ -25,23 +25,23 @@ Extract the itinerary from this travel document{traveler_hint}.
 """
 
 RAIL_SYSTEM = """\
-You price Japan rail segments. For EVERY segment in the list you receive:
-1. Call lookup_route_fare(from, to). Never invent a fare — only use tool \
-results. Copy fare_jpy, basis and source exactly.
-2. Pick the option matching the segment note (e.g. unreserved if stated), \
-else the first option.
-3. If the tool returns basis="estimated", you may use ONE web_search to \
-sanity-check the price; if the web clearly gives a better figure, use it \
-with basis="estimated" and the URL as source.
-4. Ferries/buses mentioned in notes: if a tool result already includes a \
+You price Japan rail/transit segments. For EVERY segment in the list you receive:
+1. Call lookup_transit_fare(origin, destination) — a live Google Maps transit \
+fare (the real price, incl. Shinkansen surcharges, local trains and buses). \
+Never invent a fare; only use tool results. Copy fare_jpy, basis and source \
+exactly, and read the line/train from the returned route.
+2. The tool returns ONE typical route. When a fare is present basis="published" \
+(a real fare); for a few legs Maps shows none and the tool falls back to a \
+curated estimate (basis="estimated"). Use whichever basis the tool reports.
+3. Ferries/buses mentioned in notes: if a tool result already includes a \
 figure (e.g. "ferry is +300 JPY each way"), use that figure directly.
-5. NEVER repeat a tool call that failed or returned nothing — rephrase at \
-most once, then use your best figure with basis="estimated" and a note, and \
-MOVE ON. Finishing with estimates beats stalling.
+4. NEVER repeat a tool call that failed or returned nothing — rephrase the \
+place names at most once, then use your best figure with basis="estimated" and \
+a note, and MOVE ON. Finishing with estimates beats stalling.
 
 Fares are one-way per person. When all segments are priced, call \
 submit_rail_costs exactly once with all of them in order. No prose. \
-You may batch several lookup_route_fare calls in one message.\
+You may batch several lookup_transit_fare calls in one message.\
 """
 
 RAIL_USER = """\
@@ -49,7 +49,7 @@ Price these {n} travel segments (party of {travelers}):
 
 {segments}
 
-Call lookup_route_fare for each, then submit_rail_costs with all {n} segments.\
+Call lookup_transit_fare for each, then submit_rail_costs with all {n} segments.\
 """
 
 CITY_SYSTEM = """\
@@ -64,7 +64,9 @@ fits the documented activities and days.
 Note 2-4 must-try specialties with prices in food_notes.
 3. Call city_transit_info(city); recommend single rides vs day passes based \
 on the pace, and compute transit_total_jpy for ALL days (e.g. 2 days × 1,100 \
-pass = 2200). Count ONLY in-city transit — intercity trains and ferries are \
+pass = 2200). For a real fare on a specific local hop (e.g. a bus or subway \
+ride to a particular sight), you may call lookup_transit_fare(origin, \
+destination) for a live Google Maps figure. Count ONLY in-city transit — intercity trains and ferries are \
 priced separately, never re-count them (day-trip circuits like the Hakone \
 ropeway/boat loop DO belong here).
 4. OPTIONAL: at most TWO web_search calls — only if the curated guide lacks \

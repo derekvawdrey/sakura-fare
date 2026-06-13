@@ -32,6 +32,14 @@ class Settings(BaseSettings):
     # already up). No boot/systemd involvement — only when you run the app.
     searxng_autostart: bool = True
 
+    # Live public-transit fares via the google-maps-scraper `gmaps-fares`
+    # container (real Google Maps transit fares incl. buses). Requires the
+    # image to be built locally; set enabled=False to skip the tool entirely.
+    gmaps_fares_enabled: bool = True
+    gmaps_fares_image: str = "gmaps-scraper:fares"
+    gmaps_fares_lang: str = "en"
+    gmaps_fares_timeout_seconds: float = 150.0
+
     fares_path: Path = APP_DIR / "data" / "fares.json"
     places_path: Path = APP_DIR / "data" / "places.json"
     food_path: Path = APP_DIR / "data" / "food.json"
