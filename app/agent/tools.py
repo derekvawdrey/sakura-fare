@@ -292,6 +292,15 @@ class ToolBox:
         """Warm the live-fare cache for all segment pairs in one batch (best-effort)."""
         await self._gmaps.prefetch(pairs)
 
+    async def place_transit_fares(self, origin: str, places: list[str]) -> dict[str, int | None]:
+        """One-way transit fare (JPY) from origin to each place; batched + cached, best-effort."""
+        await self._gmaps.prefetch([(origin, p) for p in places])
+        out: dict[str, int | None] = {}
+        for place in places:
+            result = await self._gmaps.transit_fare(origin, place)
+            out[place] = result.get("fare_jpy") if result.get("ok") else None
+        return out
+
     async def _dispatch(self, name: str, args: dict[str, Any]) -> Any:
         if name == "lookup_route_fare":
             return self._fares.route_fare(

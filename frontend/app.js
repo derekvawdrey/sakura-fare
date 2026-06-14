@@ -460,6 +460,7 @@ function poiList(pois, icon) {
     li.appendChild(el("span", "poi-name", p.name));
     if (p.cost_jpy) li.appendChild(el("span", "poi-cost", yen(p.cost_jpy)));
     else if (p.cost_jpy === 0) li.appendChild(el("span", "poi-cost", "free"));
+    if (p.transit_fare_jpy) li.appendChild(el("span", "poi-transit", `🚆 ${yen(p.transit_fare_jpy)}`));
     li.appendChild(el("span", "poi-why", p.why));
     ul.appendChild(li);
   }

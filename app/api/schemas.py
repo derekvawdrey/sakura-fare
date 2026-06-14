@@ -59,6 +59,7 @@ class Poi(BaseModel):
     name: str
     why: str
     cost_jpy: int | None = None
+    transit_fare_jpy: int | None = None  # one-way transit fare to reach it from the city's main station
     lat: float | None = None
     lon: float | None = None
     basis: Basis = "curated"

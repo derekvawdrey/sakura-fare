@@ -351,6 +351,11 @@ button.secondary:hover { background: var(--sakura-100); }
   background: var(--sakura-100); border-radius: 999px; padding: .05rem .5rem;
   margin-left: .35rem; white-space: nowrap;
 }
+.poi-transit {
+  font-size: .72rem; font-weight: 700; color: #4a6b8a;
+  background: #eaf1f7; border-radius: 999px; padding: .05rem .5rem;
+  margin-left: .35rem; white-space: nowrap;
+}
 .poi-why { color: #6e565e; display: block; font-size: .8rem; }
 .gem-ico { margin-right: .25rem; }
 .seasonal-note {

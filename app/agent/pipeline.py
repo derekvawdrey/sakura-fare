@@ -162,6 +162,7 @@ class AnalysisPipeline:
             coords = await self._geocode.locate(plan.city)
         plan.lat, plan.lon = coords if coords else (None, None)
         await self._fill_poi_coords(plan)
+        await self._price_poi_transit(plan)
         return plan
 
     def _fallback_city_plan(self, stay: StayExtract) -> CityPlan:
@@ -194,6 +195,17 @@ class AnalysisPipeline:
             coords = await self._geocode.locate(poi.name, plan.city)
             if coords:
                 poi.lat, poi.lon = coords
+
+    async def _price_poi_transit(self, plan: CityPlan) -> None:
+        """Price the one-way transit fare from the city's main station to each POI."""
+        pois = [*plan.highlights, *plan.hidden_gems]
+        if not pois:
+            return
+        anchor = f"{plan.city} Station"
+        fares = await self._toolbox.place_transit_fares(
+            anchor, [f"{p.name}, {plan.city}" for p in pois])
+        for poi in pois:
+            poi.transit_fare_jpy = fares.get(f"{poi.name}, {plan.city}")
 
     # ---- assembly ---------------------------------------------------------------
 
@@ -236,6 +248,7 @@ class AnalysisPipeline:
         ))
         if depth == "full":
             assumptions.append("Food totals use the per-city tier × days shown in each city plan.")
+            assumptions.append("Per-sight transit fares are one-way from each city's main station (a day pass may cover several).")
         else:
             assumptions.append("Quick mode: local transit budgeted as one day pass per city day; food not included.")
 
