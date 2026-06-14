@@ -21,7 +21,7 @@ class Settings(BaseSettings):
 
     extract_max_iterations: int = 8
     rail_max_iterations: int = 40
-    city_max_iterations: int = 18
+    city_max_iterations: int = 100
     research_max_iterations: int = 6  # nested web-research subagent
     meal_max_iterations: int = 4      # nested meal-planner subagent
     geocode_max_per_city: int = 6
